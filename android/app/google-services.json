@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "135263320114",
+    "project_id": "genartcanvas",
+    "storage_bucket": "genartcanvas.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135263320114:android:65cc310ef5b8752fb6a42b",
+        "android_client_info": {
+          "package_name": "com.roaakdm.gen_art_canvas"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQdWaYp6cWAPok3HmH8Jg4tP1mEswPuYM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

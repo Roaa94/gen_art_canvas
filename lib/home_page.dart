@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        margin: const EdgeInsets.all(50),
+        margin: const EdgeInsets.all(0),
         decoration: BoxDecoration(border: Border.all(color: Colors.red)),
         child: SizedBox.expand(
           child: CustomPaint(
@@ -23,6 +23,8 @@ class HomePage extends StatelessWidget {
 
 class GenArtCanvasPainter extends CustomPainter {
   static const crossAxisCount = 10;
+  static const mainAxisCount = 11;
+  static const totalCount = crossAxisCount * mainAxisCount;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -45,14 +47,20 @@ class GenArtCanvasPainter extends CustomPainter {
     final newHeight = diagonal * yScale + side * skewedScaleY;
 
     final initialRect = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
-    canvas.drawPath(initialRect, debugPaint);
+    // canvas.drawPath(initialRect, debugPaint);
 
     final newRect = Path()..addRect(Rect.fromLTWH(0, 0, newWidth, newHeight));
-    canvas.drawPath(newRect, debugPaint);
+    // canvas.drawPath(newRect, debugPaint);
 
-    for (int index = 0; index < crossAxisCount; index++) {
+    for (int index = 0; index < totalCount; index++) {
+      int j = index ~/ mainAxisCount;
+      int i = index % mainAxisCount;
+
+      final xOffset = (newWidth * i) - (j.isOdd ? newWidth / 2 : 0);
+      final yOffset = (side * skewedScaleY + diagonal * yScale * 0.5) * j;
+
       canvas.save();
-      canvas.translate(xOffsetToTopCenter * 2 * index, 0.0);
+      canvas.translate(xOffset, yOffset);
 
       canvas.save();
       canvas.translate(xOffsetToTopCenter, 0.0);

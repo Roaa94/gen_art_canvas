@@ -45,7 +45,7 @@ class GenArtCanvasPainter extends CustomPainter {
     final xOffsetToTopCenter = diagonal / 2;
     final newWidth = diagonal;
     final newHeight = diagonal * yScale + side * skewedScaleY;
-    const gap = 0;
+    const gap = 10;
 
     final initialRect = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
     // canvas.drawPath(initialRect, debugPaint);
@@ -57,8 +57,10 @@ class GenArtCanvasPainter extends CustomPainter {
       int j = index ~/ mainAxisCount;
       int i = index % mainAxisCount;
 
-      final xOffset = (newWidth * i) - (j.isOdd ? newWidth / 2 : 0) + gap * i;
-      final yOffset = (side * skewedScaleY + diagonal * yScale * 0.5) * j + gap * j;
+      final xOffset =
+          (newWidth * i) - (j.isOdd ? newWidth / 2 + gap / 2 : 0) + gap * i;
+      final yOffset =
+          (side * skewedScaleY + diagonal * yScale * 0.5) * j + gap * j;
 
       canvas.save();
       canvas.translate(xOffset, yOffset);

@@ -22,6 +22,8 @@ class HomePage extends StatelessWidget {
 }
 
 class GenArtCanvasPainter extends CustomPainter {
+  static const crossAxisCount = 10;
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -33,23 +35,22 @@ class GenArtCanvasPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
 
-    const side = 70.0;
-    final diagonal = side * sqrt(2);
+    final diagonal = size.width / crossAxisCount;
+    final side = diagonal / sqrt(2);
     const yScale = 0.5;
     final skewedScaleX = 0.5 * sqrt(2);
     const skewedScaleY = 0.85;
-    const totalCount = 10;
     final xOffsetToTopCenter = diagonal / 2;
     final newWidth = diagonal;
     final newHeight = diagonal * yScale + side * skewedScaleY;
 
-    final initialRect = Path()..addRect(const Rect.fromLTWH(0, 0, side, side));
+    final initialRect = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
     canvas.drawPath(initialRect, debugPaint);
 
     final newRect = Path()..addRect(Rect.fromLTWH(0, 0, newWidth, newHeight));
     canvas.drawPath(newRect, debugPaint);
 
-    for (int index = 0; index < totalCount; index++) {
+    for (int index = 0; index < crossAxisCount; index++) {
       canvas.save();
       canvas.translate(xOffsetToTopCenter * 2 * index, 0.0);
 
@@ -60,7 +61,7 @@ class GenArtCanvasPainter extends CustomPainter {
       canvas.drawPath(initialRect, paint);
       canvas.restore();
 
-      final leftPath = Path()..addRect(const Rect.fromLTWH(0, 0, side, side));
+      final leftPath = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
       canvas.save();
       canvas.translate(0, diagonal / 2 * yScale);
       canvas.skew(0.0, 0.5);
@@ -68,7 +69,7 @@ class GenArtCanvasPainter extends CustomPainter {
       canvas.drawPath(leftPath, paint);
       canvas.restore();
 
-      final rightPath = Path()..addRect(const Rect.fromLTWH(0, 0, side, side));
+      final rightPath = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
       canvas.save();
       canvas.translate(xOffsetToTopCenter, diagonal * yScale);
       canvas.skew(0.0, -0.5);

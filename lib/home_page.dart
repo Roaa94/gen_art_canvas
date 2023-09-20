@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage>
             return CustomPaint(
               painter: GenArtCanvasPainter(
                 maxRandomYOffset: 60,
-                xCount: 8,
+                diagonal: size.width * 0.1,
                 initialGap: 20,
                 animationController: animationController,
                 size: size,
@@ -61,7 +61,7 @@ class GenArtCanvasPainter extends CustomPainter {
     this.initialGap = 20,
     this.isDebug = false,
     required this.random,
-    this.xCount = 8,
+    this.diagonal = 8,
     this.yScale = 0.5,
     this.maxRandomYOffset = 50,
     required this.size,
@@ -71,7 +71,7 @@ class GenArtCanvasPainter extends CustomPainter {
       parent: animationController,
       curve: Curves.easeInOut,
     );
-    diagonal = (size.width - (initialGap * (xCount - 1))) / (xCount);
+    xCount = (size.width / diagonal).floor();
     yCount = ((size.height * 0.6) / ((diagonal * yScale) / 2)).floor();
     totalCount = xCount * yCount;
 
@@ -91,83 +91,93 @@ class GenArtCanvasPainter extends CustomPainter {
         return Offset(dx - (diagonal * 0.3), dy);
       },
     );
+
+    offsetAnimations = List.generate(
+      totalCount,
+      (index) {
+        return Tween<Offset>(
+          begin: initialOffsets[index],
+          end: initialOffsets[index] + Offset(0, randomYOffsets[index]),
+        ).animate(animation);
+      },
+    );
   }
 
   final double initialGap;
   final bool isDebug;
   final Random random;
-  final int xCount;
   final double yScale;
   final double maxRandomYOffset;
   late final Animation<double> animation;
+  late final List<Animation<Offset>> offsetAnimations;
   late final List<Offset> initialOffsets;
   late final List<double> randomYOffsets;
   final Size size;
 
   late final double diagonal;
+  late final int xCount;
   late final int yCount;
   late final int totalCount;
 
+  final strokePaint = Paint()
+    ..color = Colors.black
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 3;
+  final fillPaint = Paint()..color = Colors.white;
+
+  final skewedScaleX = 0.5 * sqrt(2);
+  static const skewedScaleY = 0.85;
+
+  double get newHeight => diagonal * yScale + side * skewedScaleY;
+
+  double get xOffsetToTopCenter => diagonal / 2;
+
+  double get side => diagonal / sqrt(2);
+
+  Path get initialRect => Path()..addRect(Rect.fromLTWH(0, 0, side, side));
+
+  Path get newRect => Path()..addRect(Rect.fromLTWH(0, 0, diagonal, newHeight));
+
   @override
   void paint(Canvas canvas, Size size) {
-    final strokePaint = Paint()
-      ..color = Colors.black
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 3;
-    final fillPaint = Paint()..color = isDebug ? Colors.red : Colors.white;
-
-    final side = diagonal / sqrt(2);
-    final skewedScaleX = 0.5 * sqrt(2);
-    const skewedScaleY = 0.85;
-    final xOffsetToTopCenter = diagonal / 2;
-    final newHeight = diagonal * yScale + side * skewedScaleY;
-
-    final initialRect = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
-    final newRect = Path()..addRect(Rect.fromLTWH(0, 0, diagonal, newHeight));
-
-    for (int i = 0; i < initialOffsets.length; i++) {
+    for (final offsetAnimation in offsetAnimations) {
       canvas.save();
       // Move the canvas to offset of next cuboid
-      final initialOffset = initialOffsets[i];
-      final offset = Offset.lerp(
-            initialOffset,
-            Offset(initialOffset.dx, initialOffset.dy + randomYOffsets[i]),
-            animation.value,
-          ) ??
-          initialOffset;
-      canvas.translate(offset.dx, offset.dy);
-
-      // Paint top face
-      canvas.save();
-      canvas.translate(xOffsetToTopCenter, 0.0);
-      canvas.scale(1.0, yScale);
-      canvas.rotate(45 * pi / 180);
-      canvas.drawPath(initialRect, strokePaint);
-      canvas.drawPath(initialRect, fillPaint);
-      canvas.restore();
-
-      // Paint left face
-      final leftPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
-      canvas.save();
-      canvas.translate(0, diagonal / 2 * yScale);
-      canvas.skew(0.0, yScale);
-      canvas.scale(skewedScaleX, skewedScaleY);
-      canvas.drawPath(leftPath, strokePaint);
-      canvas.drawPath(leftPath, fillPaint);
-      canvas.restore();
-
-      // Paint right face
-      final rightPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
-      canvas.save();
-      canvas.translate(xOffsetToTopCenter, diagonal * yScale);
-      canvas.skew(0.0, -yScale);
-      canvas.scale(skewedScaleX, skewedScaleY);
-      canvas.drawPath(rightPath, strokePaint);
-      canvas.drawPath(rightPath, fillPaint);
-      canvas.restore();
-
+      canvas.translate(offsetAnimation.value.dx, offsetAnimation.value.dy);
+      _paintCuboid(canvas);
       canvas.restore();
     }
+  }
+
+  _paintCuboid(Canvas canvas) {
+    // Paint top face
+    canvas.save();
+    canvas.translate(xOffsetToTopCenter, 0.0);
+    canvas.scale(1.0, yScale);
+    canvas.rotate(45 * pi / 180);
+    canvas.drawPath(initialRect, strokePaint);
+    canvas.drawPath(initialRect, fillPaint);
+    canvas.restore();
+
+    // Paint left face
+    final leftPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
+    canvas.save();
+    canvas.translate(0, diagonal / 2 * yScale);
+    canvas.skew(0.0, yScale);
+    canvas.scale(skewedScaleX, skewedScaleY);
+    canvas.drawPath(leftPath, strokePaint);
+    canvas.drawPath(leftPath, fillPaint);
+    canvas.restore();
+
+    // Paint right face
+    final rightPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
+    canvas.save();
+    canvas.translate(xOffsetToTopCenter, diagonal * yScale);
+    canvas.skew(0.0, -yScale);
+    canvas.scale(skewedScaleX, skewedScaleY);
+    canvas.drawPath(rightPath, strokePaint);
+    canvas.drawPath(rightPath, fillPaint);
+    canvas.restore();
   }
 
   @override

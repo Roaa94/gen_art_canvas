@@ -10,6 +10,7 @@ class GenArtCanvasApp extends StatelessWidget {
     return MaterialApp(
       title: 'GenArtCanvas',
       theme: ThemeData(
+        scaffoldBackgroundColor: Colors.white,
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),

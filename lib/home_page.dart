@@ -10,8 +10,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  double gap = 0;
+  double gap = 50;
   bool isDebug = false;
+  static final random = Random();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class _HomePageState extends State<HomePage> {
               child: CustomPaint(
                 painter: GenArtCanvasPainter(
                   isDebug: isDebug,
+                  random: random,
                   gap: gap,
                 ),
               ),
@@ -70,10 +72,12 @@ class GenArtCanvasPainter extends CustomPainter {
   const GenArtCanvasPainter({
     this.gap = 0,
     this.isDebug = false,
+    required this.random,
   });
 
   final double gap;
   final bool isDebug;
+  final Random random;
   static const crossAxisCount = 15;
   static const yScale = 0.5;
 
@@ -98,18 +102,20 @@ class GenArtCanvasPainter extends CustomPainter {
     final newWidth = diagonal;
     final newHeight = diagonal * yScale + side * skewedScaleY;
 
-    final mainAxisCount =
-        (size.height / (newHeight - (diagonal * yScale) / 2)).floor();
+    int mainAxisCount =
+        ((size.height * 0.5) / ((diagonal * yScale) / 2)).floor();
     final totalCount = crossAxisCount * mainAxisCount;
 
     for (int index = 0; index < totalCount; index++) {
       int j = index ~/ crossAxisCount;
       int i = index % crossAxisCount;
+      final randomYOffset = random.nextDoubleRange(50);
 
       double xOffset =
           (newWidth * i) - (j.isOdd ? newWidth / 2 + gap / 2 : 0) + gap * i;
-      double yOffset =
-          (side * skewedScaleY + diagonal * yScale * 0.5) * j + gap * j;
+      double yOffset = (diagonal * yScale * 0.5) * j + gap * yScale * j;
+      yOffset += randomYOffset;
+
       final initialRect = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
       final newRect = Path()..addRect(Rect.fromLTWH(0, 0, newWidth, newHeight));
 
@@ -127,7 +133,7 @@ class GenArtCanvasPainter extends CustomPainter {
       final leftPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
       canvas.save();
       canvas.translate(0, diagonal / 2 * yScale);
-      canvas.skew(0.0, 0.5);
+      canvas.skew(0.0, yScale);
       canvas.scale(skewedScaleX, skewedScaleY);
       canvas.drawPath(leftPath, strokePaint);
       canvas.drawPath(leftPath, fillPaint);
@@ -136,7 +142,7 @@ class GenArtCanvasPainter extends CustomPainter {
       final rightPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
       canvas.save();
       canvas.translate(xOffsetToTopCenter, diagonal * yScale);
-      canvas.skew(0.0, -0.5);
+      canvas.skew(0.0, -yScale);
       canvas.scale(skewedScaleX, skewedScaleY);
       canvas.drawPath(rightPath, strokePaint);
       canvas.drawPath(rightPath, fillPaint);
@@ -153,5 +159,12 @@ class GenArtCanvasPainter extends CustomPainter {
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
     return false;
+  }
+}
+
+extension on Random {
+  double nextDoubleRange(double x) {
+    final random = Random();
+    return (2 * x * random.nextDouble()) - x;
   }
 }

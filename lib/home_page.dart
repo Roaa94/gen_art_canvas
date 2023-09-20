@@ -9,77 +9,97 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  double gap = 50;
-  bool isDebug = false;
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController animationController;
   static final random = Random();
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1000),
+    );
+    // animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    animationController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Container(
-            margin: const EdgeInsets.all(0),
-            decoration: BoxDecoration(border: Border.all(color: Colors.red)),
-            child: SizedBox.expand(
-              child: CustomPaint(
-                painter: GenArtCanvasPainter(
-                  isDebug: isDebug,
-                  random: random,
-                  gap: gap,
-                ),
+      body: Container(
+        margin: const EdgeInsets.all(0),
+        decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+        child: SizedBox.expand(
+          child: LayoutBuilder(builder: (context, constraints) {
+            final size = constraints.biggest;
+            return CustomPaint(
+              painter: GenArtCanvasPainter(
+                animationController: animationController,
+                size: size,
+                random: random,
               ),
-            ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      Text('Gap'),
-                      Slider(
-                        value: gap,
-                        onChanged: (value) => setState(() => gap = value),
-                        min: 0,
-                        max: 100,
-                        divisions: 100,
-                      ),
-                    ],
-                  ),
-                  SwitchListTile(
-                    title: Text('Is Debug'),
-                    value: isDebug,
-                    onChanged: (value) => setState(() => isDebug = value),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ],
+            );
+          }),
+        ),
       ),
     );
   }
 }
 
 class GenArtCanvasPainter extends CustomPainter {
-  const GenArtCanvasPainter({
-    this.gap = 0,
+  GenArtCanvasPainter({
+    this.initialGap = 40,
     this.isDebug = false,
     required this.random,
-  });
+    this.xCount = 8,
+    this.yScale = 0.5,
+    this.maxRandomYOffset = 50,
+    required this.size,
+    required AnimationController animationController,
+  }) : super(repaint: animationController) {
+    animation = CurvedAnimation(
+      parent: animationController,
+      curve: Curves.easeInOut,
+    );
+    diagonal = (size.width - (initialGap * (xCount - 1))) / (xCount);
+    yCount = ((size.height * 0.5) / ((diagonal * yScale) / 2)).floor();
+    totalCount = xCount * yCount;
 
-  final double gap;
+    offsets = List.generate(
+      totalCount,
+      (index) {
+        int i = index % xCount;
+        int j = index ~/ xCount;
+        final dx = (diagonal * i) +
+            (j.isOdd ? diagonal / 2 + initialGap / 2 : 0) +
+            initialGap * i;
+        final dy = (diagonal * yScale * 0.5) * j + initialGap * yScale * j;
+        final randomYOffset = random.nextDoubleRange(maxRandomYOffset);
+        return Offset(dx - (diagonal * 0.3), dy + randomYOffset);
+      },
+    );
+  }
+
+  final double initialGap;
   final bool isDebug;
   final Random random;
-  static const crossAxisCount = 15;
-  static const yScale = 0.5;
+  final int xCount;
+  final double yScale;
+  final double maxRandomYOffset;
+  late final Animation<double> animation;
+  late final List<Offset> offsets;
+  final Size size;
+
+  late final double diagonal;
+  late final int yCount;
+  late final int totalCount;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -88,40 +108,22 @@ class GenArtCanvasPainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeWidth = 3;
     final fillPaint = Paint()..color = isDebug ? Colors.red : Colors.white;
-    final debugPaint = Paint()
-      ..color = Colors.yellow
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 2;
-
-    final diagonal = size.width / (crossAxisCount - 1);
 
     final side = diagonal / sqrt(2);
     final skewedScaleX = 0.5 * sqrt(2);
     const skewedScaleY = 0.85;
     final xOffsetToTopCenter = diagonal / 2;
-    final newWidth = diagonal;
     final newHeight = diagonal * yScale + side * skewedScaleY;
 
-    int mainAxisCount =
-        ((size.height * 0.5) / ((diagonal * yScale) / 2)).floor();
-    final totalCount = crossAxisCount * mainAxisCount;
+    final initialRect = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
+    final newRect = Path()..addRect(Rect.fromLTWH(0, 0, diagonal, newHeight));
 
-    for (int index = 0; index < totalCount; index++) {
-      int j = index ~/ crossAxisCount;
-      int i = index % crossAxisCount;
-      final randomYOffset = random.nextDoubleRange(50);
-
-      double xOffset =
-          (newWidth * i) - (j.isOdd ? newWidth / 2 + gap / 2 : 0) + gap * i;
-      double yOffset = (diagonal * yScale * 0.5) * j + gap * yScale * j;
-      yOffset += randomYOffset;
-
-      final initialRect = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
-      final newRect = Path()..addRect(Rect.fromLTWH(0, 0, newWidth, newHeight));
-
+    for (final offset in offsets) {
       canvas.save();
-      canvas.translate(xOffset, yOffset);
+      // Move the canvas to offset of next cuboid
+      canvas.translate(offset.dx, offset.dy);
 
+      // Paint top face
       canvas.save();
       canvas.translate(xOffsetToTopCenter, 0.0);
       canvas.scale(1.0, yScale);
@@ -130,6 +132,7 @@ class GenArtCanvasPainter extends CustomPainter {
       canvas.drawPath(initialRect, fillPaint);
       canvas.restore();
 
+      // Paint left face
       final leftPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
       canvas.save();
       canvas.translate(0, diagonal / 2 * yScale);
@@ -139,6 +142,7 @@ class GenArtCanvasPainter extends CustomPainter {
       canvas.drawPath(leftPath, fillPaint);
       canvas.restore();
 
+      // Paint right face
       final rightPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
       canvas.save();
       canvas.translate(xOffsetToTopCenter, diagonal * yScale);
@@ -149,10 +153,6 @@ class GenArtCanvasPainter extends CustomPainter {
       canvas.restore();
 
       canvas.restore();
-      if (isDebug) {
-        canvas.drawPath(initialRect, debugPaint);
-        canvas.drawPath(newRect, debugPaint);
-      }
     }
   }
 

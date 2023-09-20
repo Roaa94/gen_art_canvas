@@ -41,9 +41,9 @@ class _HomePageState extends State<HomePage>
             final size = constraints.biggest;
             return CustomPaint(
               painter: GenArtCanvasPainter(
-                maxRandomYOffset: 60,
+                maxRandomYOffset: size.height * 0.1,
                 diagonal: size.width * 0.1,
-                initialGap: 20,
+                initialGap: 30,
                 animationController: animationController,
                 size: size,
                 random: random,
@@ -61,7 +61,7 @@ class GenArtCanvasPainter extends CustomPainter {
     this.initialGap = 20,
     this.isDebug = false,
     required this.random,
-    this.diagonal = 8,
+    this.diagonal = 100,
     this.yScale = 0.5,
     this.maxRandomYOffset = 50,
     required this.size,
@@ -71,7 +71,7 @@ class GenArtCanvasPainter extends CustomPainter {
       parent: animationController,
       curve: Curves.easeInOut,
     );
-    xCount = (size.width / diagonal).floor();
+    xCount = (size.width / (diagonal + initialGap * 0.5)).ceil() - 1;
     yCount = ((size.height * 0.6) / ((diagonal * yScale) / 2)).floor();
     totalCount = xCount * yCount;
 
@@ -126,11 +126,8 @@ class GenArtCanvasPainter extends CustomPainter {
   final fillPaint = Paint()..color = Colors.white;
 
   final skewedScaleX = 0.5 * sqrt(2);
-  static const skewedScaleY = 0.85;
 
-  double get newHeight => diagonal * yScale + side * skewedScaleY;
-
-  double get xOffsetToTopCenter => diagonal / 2;
+  double get newHeight => diagonal * yScale + side;
 
   double get side => diagonal / sqrt(2);
 
@@ -152,7 +149,7 @@ class GenArtCanvasPainter extends CustomPainter {
   _paintCuboid(Canvas canvas) {
     // Paint top face
     canvas.save();
-    canvas.translate(xOffsetToTopCenter, 0.0);
+    canvas.translate(diagonal / 2, 0.0);
     canvas.scale(1.0, yScale);
     canvas.rotate(45 * pi / 180);
     canvas.drawPath(initialRect, strokePaint);
@@ -164,7 +161,7 @@ class GenArtCanvasPainter extends CustomPainter {
     canvas.save();
     canvas.translate(0, diagonal / 2 * yScale);
     canvas.skew(0.0, yScale);
-    canvas.scale(skewedScaleX, skewedScaleY);
+    canvas.scale(skewedScaleX, 1.0);
     canvas.drawPath(leftPath, strokePaint);
     canvas.drawPath(leftPath, fillPaint);
     canvas.restore();
@@ -172,9 +169,9 @@ class GenArtCanvasPainter extends CustomPainter {
     // Paint right face
     final rightPath = Path()..addRect(Rect.fromLTWH(0, 0, side, size.height));
     canvas.save();
-    canvas.translate(xOffsetToTopCenter, diagonal * yScale);
+    canvas.translate(diagonal / 2, diagonal * yScale);
     canvas.skew(0.0, -yScale);
-    canvas.scale(skewedScaleX, skewedScaleY);
+    canvas.scale(skewedScaleX, 1.0);
     canvas.drawPath(rightPath, strokePaint);
     canvas.drawPath(rightPath, fillPaint);
     canvas.restore();

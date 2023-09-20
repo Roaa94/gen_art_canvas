@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage>
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     );
-    // animationController.repeat(reverse: true);
+    animationController.repeat(reverse: true);
   }
 
   @override
@@ -41,6 +41,9 @@ class _HomePageState extends State<HomePage>
             final size = constraints.biggest;
             return CustomPaint(
               painter: GenArtCanvasPainter(
+                maxRandomYOffset: 60,
+                xCount: 8,
+                initialGap: 20,
                 animationController: animationController,
                 size: size,
                 random: random,
@@ -55,7 +58,7 @@ class _HomePageState extends State<HomePage>
 
 class GenArtCanvasPainter extends CustomPainter {
   GenArtCanvasPainter({
-    this.initialGap = 40,
+    this.initialGap = 20,
     this.isDebug = false,
     required this.random,
     this.xCount = 8,
@@ -69,10 +72,14 @@ class GenArtCanvasPainter extends CustomPainter {
       curve: Curves.easeInOut,
     );
     diagonal = (size.width - (initialGap * (xCount - 1))) / (xCount);
-    yCount = ((size.height * 0.5) / ((diagonal * yScale) / 2)).floor();
+    yCount = ((size.height * 0.6) / ((diagonal * yScale) / 2)).floor();
     totalCount = xCount * yCount;
 
-    offsets = List.generate(
+    randomYOffsets = List.generate(
+      totalCount,
+      (index) => random.nextDoubleRange(maxRandomYOffset),
+    );
+    initialOffsets = List.generate(
       totalCount,
       (index) {
         int i = index % xCount;
@@ -81,8 +88,7 @@ class GenArtCanvasPainter extends CustomPainter {
             (j.isOdd ? diagonal / 2 + initialGap / 2 : 0) +
             initialGap * i;
         final dy = (diagonal * yScale * 0.5) * j + initialGap * yScale * j;
-        final randomYOffset = random.nextDoubleRange(maxRandomYOffset);
-        return Offset(dx - (diagonal * 0.3), dy + randomYOffset);
+        return Offset(dx - (diagonal * 0.3), dy);
       },
     );
   }
@@ -94,7 +100,8 @@ class GenArtCanvasPainter extends CustomPainter {
   final double yScale;
   final double maxRandomYOffset;
   late final Animation<double> animation;
-  late final List<Offset> offsets;
+  late final List<Offset> initialOffsets;
+  late final List<double> randomYOffsets;
   final Size size;
 
   late final double diagonal;
@@ -118,9 +125,16 @@ class GenArtCanvasPainter extends CustomPainter {
     final initialRect = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
     final newRect = Path()..addRect(Rect.fromLTWH(0, 0, diagonal, newHeight));
 
-    for (final offset in offsets) {
+    for (int i = 0; i < initialOffsets.length; i++) {
       canvas.save();
       // Move the canvas to offset of next cuboid
+      final initialOffset = initialOffsets[i];
+      final offset = Offset.lerp(
+            initialOffset,
+            Offset(initialOffset.dx, initialOffset.dy + randomYOffsets[i]),
+            animation.value,
+          ) ??
+          initialOffset;
       canvas.translate(offset.dx, offset.dy);
 
       // Paint top face

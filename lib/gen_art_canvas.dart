@@ -18,10 +18,17 @@ class _GenArtCanvasState extends State<GenArtCanvas>
     with SingleTickerProviderStateMixin {
   late final AnimationController animationController;
   static final random = Random();
+  static const animationDuration = Duration(milliseconds: 2000);
+  AnimationStatus animationStatus = AnimationStatus.forward;
 
   void _animationControllerListener() {
-    // print("animationController.isCompleted");
-    // print(animationController.isCompleted);
+    if (animationController.status != animationStatus) {
+      if (animationController.status == AnimationStatus.forward &&
+          animationStatus == AnimationStatus.reverse) {
+        // Todo: reset random offsets
+      }
+      animationStatus = animationController.status;
+    }
   }
 
   @override
@@ -29,9 +36,9 @@ class _GenArtCanvasState extends State<GenArtCanvas>
     super.initState();
     animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: animationDuration,
     );
-    // animationController.repeat(reverse: true);
+    animationController.repeat(reverse: true);
     animationController.addListener(_animationControllerListener);
   }
 
@@ -61,11 +68,9 @@ class _GenArtCanvasState extends State<GenArtCanvas>
   }
 }
 
-
 class GenArtCanvasPainter extends CustomPainter {
   GenArtCanvasPainter({
     this.initialGap = 20,
-    this.isDebug = false,
     required this.random,
     this.diagonal = 100,
     this.yScale = 0.5,
@@ -83,11 +88,11 @@ class GenArtCanvasPainter extends CustomPainter {
 
     randomYOffsets = List.generate(
       totalCount,
-          (index) => random.nextDoubleRange(maxRandomYOffset),
+      (index) => random.nextDoubleRange(maxRandomYOffset),
     );
     initialOffsets = List.generate(
       totalCount,
-          (index) {
+      (index) {
         int i = index % xCount;
         int j = index ~/ xCount;
         final dx = (diagonal * i) +
@@ -100,7 +105,7 @@ class GenArtCanvasPainter extends CustomPainter {
 
     offsetAnimations = List.generate(
       totalCount,
-          (index) {
+      (index) {
         return Tween<Offset>(
           begin: initialOffsets[index],
           end: initialOffsets[index] + Offset(0, randomYOffsets[index]),
@@ -110,7 +115,6 @@ class GenArtCanvasPainter extends CustomPainter {
   }
 
   final double initialGap;
-  final bool isDebug;
   final Random random;
   final double yScale;
   final double maxRandomYOffset;

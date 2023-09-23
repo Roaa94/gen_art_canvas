@@ -10,14 +10,14 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     const ratio = 1080/1920;
     return Scaffold(
-      body: Center(
+      body: Align(
+        alignment: Alignment.bottomCenter,
         child: FittedBox(
           child: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width * ratio,
-            child: Container(
-              margin: const EdgeInsets.all(20),
-              child: CuboidsGenArtCanvas(),
+            child: CuboidsGenArtCanvas(
+              initialGap: MediaQuery.of(context).size.width * 0.02,
             ),
           ),
         ),

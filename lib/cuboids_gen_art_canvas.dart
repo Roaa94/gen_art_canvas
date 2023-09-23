@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CuboidsGenArtCanvas extends StatefulWidget {
   CuboidsGenArtCanvas({
     super.key,
-    this.cuboidsTotalCount = 50,
+    this.cuboidsTotalCount = 100,
     this.maxRandomYOffset = 170,
     this.initialGap = 40,
     this.direction = Axis.vertical,
@@ -56,6 +56,19 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
       widget.cuboidsTotalCount,
       (index) => random.nextDoubleRange(widget.maxRandomYOffset),
     );
+  }
+
+  @override
+  void didUpdateWidget(covariant CuboidsGenArtCanvas oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.cuboidsTotalCount != widget.cuboidsTotalCount) {
+      setState(() {
+        randomYOffsets = List.generate(
+          widget.cuboidsTotalCount,
+          (index) => random.nextDoubleRange(widget.maxRandomYOffset),
+        );
+      });
+    }
   }
 
   @override

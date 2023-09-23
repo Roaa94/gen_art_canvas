@@ -3,12 +3,13 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class CuboidsGenArtCanvas extends StatefulWidget {
-  const CuboidsGenArtCanvas({
+  CuboidsGenArtCanvas({
     super.key,
-    this.cuboidsCrossAxisCount = 10,
-    this.cuboidsMainAxisCount = 20,
+    this.cuboidsTotalCount = 21,
     this.direction = Axis.vertical,
-  }) : cuboidsTotalCount = cuboidsMainAxisCount * cuboidsCrossAxisCount;
+  })  : assert(cuboidsTotalCount % 3 == 0),
+        cuboidsCrossAxisCount = (cuboidsTotalCount / 3).floor(),
+        cuboidsMainAxisCount = (2 * cuboidsTotalCount / 3).floor();
 
   final Axis direction;
 

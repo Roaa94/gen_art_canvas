@@ -14,7 +14,7 @@ class CuboidsCanvasSettings extends Equatable {
 
   factory CuboidsCanvasSettings.fromMap(Map<String, dynamic> data) {
     final cuboidsTotalCount = data['cuboidsTotalCount'] as int;
-    final maxRandomYOffset = data['maxRandomYOffset'] as double;
+    final maxRandomYOffset = data['maxRandomYOffset'].toDouble();
 
     return CuboidsCanvasSettings(
       cuboidsTotalCount: cuboidsTotalCount,

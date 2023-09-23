@@ -14,6 +14,10 @@ class AuthRepository {
     final credentials = await _auth.signInAnonymously();
     return credentials.user;
   }
+
+  Future<void> signOut() {
+    return _auth.signOut();
+  }
 }
 
 final authRepositoryProvider = Provider<AuthRepository>(

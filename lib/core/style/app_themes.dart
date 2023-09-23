@@ -6,7 +6,8 @@ class AppThemes {
         fontFamily: 'Raleway',
         scaffoldBackgroundColor: AppColors.firebaseDarkGrey,
         colorScheme: ColorScheme.fromSeed(
-          seedColor: AppColors.firebaseAmber,
+          seedColor: AppColors.primary,
+          primary: AppColors.primary,
           brightness: Brightness.dark,
         ),
         dialogTheme: const DialogTheme(
@@ -16,6 +17,11 @@ class AppThemes {
         useMaterial3: true,
         inputDecorationTheme: const InputDecorationTheme(
           filled: true,
+        ),
+        bottomSheetTheme: const BottomSheetThemeData(
+          backgroundColor: AppColors.firebaseDarkGrey,
+          modalElevation: 0,
+          elevation: 0,
         ),
       );
 }

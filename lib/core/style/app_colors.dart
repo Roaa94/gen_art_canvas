@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColors {
   static const Color firebaseYellow = Color(0xFFFFCA28);
   static const Color firebaseAmber = Color(0xFFFFA000);
+  static const Color primary = firebaseAmber;
   static const Color firebaseOrange = Color(0xFFF57C00);
   static const Color firebaseNavy = Color(0xFF1B3A57);
   static const Color firebaseCoral = Color(0xFFFF8A65);

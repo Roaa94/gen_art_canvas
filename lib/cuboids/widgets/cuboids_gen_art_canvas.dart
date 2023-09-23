@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gen_art_canvas/cuboids/models/cuboid_data.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
 class CuboidsGenArtCanvas extends StatefulWidget {
@@ -9,11 +10,13 @@ class CuboidsGenArtCanvas extends StatefulWidget {
     this.initialGap = 40,
     this.direction = Axis.vertical,
     required this.settings,
+    this.cuboidsData = const [],
   });
 
   final Axis direction;
   final double initialGap;
   final CuboidsCanvasSettings settings;
+  final List<CuboidData> cuboidsData;
 
   @override
   State<CuboidsGenArtCanvas> createState() => _CuboidsGenArtCanvasState();
@@ -96,6 +99,7 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
                 settings: widget.settings,
                 initialGap: widget.initialGap,
                 animationController: animationController,
+                cuboidsData: widget.cuboidsData,
               ),
             ),
           ),
@@ -112,6 +116,7 @@ class GenArtCanvasPainter extends CustomPainter {
     this.yScale = 0.5,
     required this.randomYOffsets,
     required AnimationController animationController,
+    this.cuboidsData = const [],
   })  : assert(randomYOffsets.length == settings.cuboidsTotalCount),
         animation = CurvedAnimation(
           parent: animationController,
@@ -138,6 +143,7 @@ class GenArtCanvasPainter extends CustomPainter {
   final double yScale;
   late final Animation<double> animation;
   final List<double> randomYOffsets;
+  final List<CuboidData> cuboidsData;
 
   final skewedScaleX = 0.5 * sqrt(2);
 
@@ -151,6 +157,8 @@ class GenArtCanvasPainter extends CustomPainter {
       int j = index ~/ cuboidsCrossAxisCount;
       int i = index % cuboidsCrossAxisCount;
 
+      final cuboidData =
+          cuboidsData.length - 1 >= index ? cuboidsData[index] : null;
       final xOffset =
           (diagonal * i) + (j.isOdd ? diagonal / 2 + gap / 2 : 0) + gap * i;
       final yOffset = (diagonal * yScale * 0.5) * j + gap * yScale * j;
@@ -159,18 +167,21 @@ class GenArtCanvasPainter extends CustomPainter {
           Offset(beginOffset.dx, beginOffset.dy + randomYOffsets[index]);
       final animatedYOffset =
           Offset.lerp(beginOffset, endOffset, animation.value) ?? beginOffset;
+
       canvas.save();
       // Move the canvas to offset of next cuboid
       canvas.translate(animatedYOffset.dx, animatedYOffset.dy);
-      _paintCuboid(canvas, size, diagonal);
+      _paintCuboid(canvas, size, diagonal, cuboidData);
       canvas.restore();
     }
   }
 
-  _paintCuboid(Canvas canvas, Size size, double diagonal) {
+  _paintCuboid(Canvas canvas, Size size, double diagonal, CuboidData? data) {
     final side = diagonal / sqrt(2);
     final topFacePath = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
-    final topFacePaint = Paint()..color = settings.defaultPrimaryColor.shade600;
+    final topFaceFillColor =
+        data?.topFace.fillColor ?? settings.defaultPrimaryColor.shade600;
+    final topFacePaint = Paint()..color = topFaceFillColor;
     // Paint top face
     canvas.save();
     canvas.translate(diagonal / 2, 0.0);
@@ -182,8 +193,9 @@ class GenArtCanvasPainter extends CustomPainter {
     // Paint left face
     final leftFacePath = Path()
       ..addRect(Rect.fromLTWH(0, 0, side, size.height));
-    final leftFacePaint = Paint()
-      ..color = settings.defaultPrimaryColor.shade900;
+    final leftFaceFillColor =
+        data?.leftFace.fillColor ?? settings.defaultPrimaryColor.shade900;
+    final leftFacePaint = Paint()..color = leftFaceFillColor;
     canvas.save();
     canvas.translate(0, diagonal / 2 * yScale);
     canvas.skew(0.0, yScale);
@@ -194,8 +206,9 @@ class GenArtCanvasPainter extends CustomPainter {
     // Paint right face
     final rightFacePath = Path()
       ..addRect(Rect.fromLTWH(0, 0, side, size.height));
-    final rightFacePaint = Paint()
-      ..color = settings.defaultPrimaryColor.shade800;
+    final rightFaceFillColor =
+        data?.rightFace.fillColor ?? settings.defaultPrimaryColor.shade800;
+    final rightFacePaint = Paint()..color = rightFaceFillColor;
     canvas.save();
     canvas.translate(diagonal / 2, diagonal * yScale);
     canvas.skew(0.0, -yScale);

@@ -12,6 +12,23 @@ class CuboidsCanvasSettings extends Equatable {
   final double maxRandomYOffset;
   final MaterialColor defaultPrimaryColor;
 
+  factory CuboidsCanvasSettings.fromMap(Map<String, dynamic> data) {
+    final cuboidsTotalCount = data['cuboidsTotalCount'] as int;
+    final maxRandomYOffset = data['maxRandomYOffset'] as double;
+
+    return CuboidsCanvasSettings(
+      cuboidsTotalCount: cuboidsTotalCount,
+      maxRandomYOffset: maxRandomYOffset,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'cuboidsTotalCount': cuboidsTotalCount,
+      'maxRandomYOffset': maxRandomYOffset,
+    };
+  }
+
   @override
   List<Object?> get props => [
         cuboidsTotalCount,

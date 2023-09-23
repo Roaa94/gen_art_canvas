@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gen_art_canvas/cuboids/models/cuboids_canvas_settings.dart';
+import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
 class CuboidsGenArtCanvas extends StatefulWidget {
   const CuboidsGenArtCanvas({

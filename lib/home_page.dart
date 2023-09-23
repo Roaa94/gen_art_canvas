@@ -13,8 +13,8 @@ class HomePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: ref.watch(cuboidsCanvasSettingsProvider).when(
-            data: (data) => CuboidsGenArtCanvas(
-              settings: data ?? const CuboidsCanvasSettings(),
+            data: (CuboidsCanvasSettings settings) => CuboidsGenArtCanvas(
+              settings: settings,
               initialGap: MediaQuery.of(context).size.width * 0.02,
             ),
             error: (e, _) {

@@ -13,7 +13,7 @@ class CanvasSettingsRepository implements FirestoreRepository {
 
   static const String canvasSettingsDocumentId = 'cuboids_canvas_settings';
 
-  Stream<CuboidsCanvasSettings?> watchCuboidsCanvasSettings() {
+  Stream<CuboidsCanvasSettings> watchCuboidsCanvasSettings() {
     return _firestore
         .collection(collectionName)
         .doc(canvasSettingsDocumentId)
@@ -23,7 +23,7 @@ class CanvasSettingsRepository implements FirestoreRepository {
           toFirestore: (settings, _) => settings.toMap(),
         )
         .snapshots()
-        .map((event) => event.data());
+        .map((event) => event.data() ?? const CuboidsCanvasSettings());
   }
 }
 

@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_data.dart';
+import 'package:gen_art_canvas/cuboids/data/cuboid.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
 class CuboidsGenArtCanvas extends StatefulWidget {
@@ -16,7 +16,7 @@ class CuboidsGenArtCanvas extends StatefulWidget {
   final Axis direction;
   final double initialGap;
   final CuboidsCanvasSettings settings;
-  final List<CuboidData> cuboidsData;
+  final List<Cuboid> cuboidsData;
 
   @override
   State<CuboidsGenArtCanvas> createState() => _CuboidsGenArtCanvasState();
@@ -143,7 +143,7 @@ class GenArtCanvasPainter extends CustomPainter {
   final double yScale;
   late final Animation<double> animation;
   final List<double> randomYOffsets;
-  final List<CuboidData> cuboidsData;
+  final List<Cuboid> cuboidsData;
 
   final skewedScaleX = 0.5 * sqrt(2);
 
@@ -176,7 +176,7 @@ class GenArtCanvasPainter extends CustomPainter {
     }
   }
 
-  _paintCuboid(Canvas canvas, Size size, double diagonal, CuboidData? data) {
+  _paintCuboid(Canvas canvas, Size size, double diagonal, Cuboid? data) {
     final side = diagonal / sqrt(2);
     final topFacePath = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
     final topFaceFillColor =

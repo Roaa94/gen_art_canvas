@@ -18,6 +18,13 @@ class AppThemes {
         inputDecorationTheme: const InputDecorationTheme(
           filled: true,
         ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: Colors.black,
+            elevation: 0,
+          ),
+        ),
         bottomSheetTheme: const BottomSheetThemeData(
           backgroundColor: AppColors.firebaseDarkGrey,
           modalElevation: 0,

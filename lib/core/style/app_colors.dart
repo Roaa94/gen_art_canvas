@@ -12,10 +12,25 @@ class AppColors {
   static const Color googleBlue600 = Color(0xFF1A73E8);
   static const Color googleBlue700 = Color(0xFF1967D2);
 
-  static Color getShade(Color color, {bool darker = false, double value = .1}) {
+  static Color? fromHex(String? hex) {
+    if (hex == null || hex.isEmpty || (hex.length != 6 && hex.length != 8)) {
+      return null;
+    }
+    if (hex.length == 6) {
+      return Color(int.parse('0xFF$hex'));
+    }
+    if (hex.length == 8) {
+      return Color(int.parse('0x$hex'));
+    }
+    return null;
+  }
+}
+
+extension ColorExtension on Color {
+  Color getShade({bool darker = false, double value = .1}) {
     assert(value >= 0 && value <= 1);
 
-    final hsl = HSLColor.fromColor(color);
+    final hsl = HSLColor.fromColor(this);
     final hslDark = hsl.withLightness(
         (darker ? (hsl.lightness - value) : (hsl.lightness + value))
             .clamp(0.0, 1.0));
@@ -23,19 +38,29 @@ class AppColors {
     return hslDark.toColor();
   }
 
-  static MaterialColor getMaterialColorFromColor(Color color) {
-    Map<int, Color> _colorShades = {
-      50: getShade(color, value: 0.5),
-      100: getShade(color, value: 0.4),
-      200: getShade(color, value: 0.3),
-      300: getShade(color, value: 0.2),
-      400: getShade(color, value: 0.1),
-      500: color, //Primary value
-      600: getShade(color, value: 0.1, darker: true),
-      700: getShade(color, value: 0.15, darker: true),
-      800: getShade(color, value: 0.2, darker: true),
-      900: getShade(color, value: 0.25, darker: true),
+  MaterialColor toMaterial() {
+    Map<int, Color> colorShades = {
+      50: getShade(value: 0.5),
+      100: getShade(value: 0.4),
+      200: getShade(value: 0.3),
+      300: getShade(value: 0.2),
+      400: getShade(value: 0.1),
+      500: this, //Primary value
+      600: getShade(value: 0.1, darker: true),
+      700: getShade(value: 0.15, darker: true),
+      800: getShade(value: 0.2, darker: true),
+      900: getShade(value: 0.25, darker: true),
     };
-    return MaterialColor(color.value, _colorShades);
+    return MaterialColor(value, colorShades);
+  }
+
+  String toHex({bool leadingHashSign = false, bool withAlpha = false}) {
+    String hex = '';
+    if (leadingHashSign) hex += '#';
+    if (withAlpha) hex += alpha.toRadixString(16).padLeft(2, '0');
+    hex += red.toRadixString(16).padLeft(2, '0');
+    hex += green.toRadixString(16).padLeft(2, '0');
+    hex += blue.toRadixString(16).padLeft(2, '0');
+    return hex;
   }
 }

@@ -104,7 +104,9 @@ class _HomePageState extends ConsumerState<HomePage> {
                           : () => _showCreatorBottomSheet(context, settings),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 10),
+                          horizontal: 20,
+                          vertical: 10,
+                        ),
                         decoration: BoxDecoration(
                           color: AppColors.firebaseDarkGrey,
                           borderRadius: const BorderRadius.only(

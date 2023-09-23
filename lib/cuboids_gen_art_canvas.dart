@@ -5,27 +5,16 @@ import 'package:flutter/material.dart';
 class CuboidsGenArtCanvas extends StatefulWidget {
   CuboidsGenArtCanvas({
     super.key,
-    this.cuboidsTotalCount = 21,
+    this.cuboidsTotalCount = 50,
+    this.maxRandomYOffset = 170,
+    this.initialGap = 40,
     this.direction = Axis.vertical,
-  })  : assert(cuboidsTotalCount % 3 == 0),
-        cuboidsCrossAxisCount = (cuboidsTotalCount / 3).floor(),
-        cuboidsMainAxisCount = (2 * cuboidsTotalCount / 3).floor();
+  }) : assert(cuboidsTotalCount.isEven);
 
   final Axis direction;
-
-  /// If [direction] is [Axis.vertical], this will be the number
-  /// of cuboids on the vertical axis
-  /// If [direction] is [Axis.horizontal], this will be the number
-  /// of cuboids on the horizontal axis
-  final int cuboidsMainAxisCount;
-
-  /// If [direction] is [Axis.vertical], this will be the number
-  /// of cuboids on the horizontal axis
-  /// If [direction] is [Axis.horizontal], this will be the number
-  /// of cuboids on the vertical axis
-  final int cuboidsCrossAxisCount;
-
   final int cuboidsTotalCount;
+  final double maxRandomYOffset;
+  final double initialGap;
 
   @override
   State<CuboidsGenArtCanvas> createState() => _CuboidsGenArtCanvasState();
@@ -39,8 +28,6 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
   AnimationStatus animationStatus = AnimationStatus.forward;
   late List<double> randomYOffsets;
 
-  double get maxRandomYOffset => 100;
-
   void _animationControllerListener() {
     if (animationController.status != animationStatus) {
       if (animationController.status == AnimationStatus.forward &&
@@ -48,7 +35,7 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
         setState(() {
           randomYOffsets = List.generate(
             widget.cuboidsTotalCount,
-            (index) => random.nextDoubleRange(maxRandomYOffset),
+            (index) => random.nextDoubleRange(widget.maxRandomYOffset),
           );
         });
       }
@@ -63,11 +50,11 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
       vsync: this,
       duration: animationDuration,
     );
-    // animationController.repeat(reverse: true);
+    animationController.repeat(reverse: true);
     animationController.addListener(_animationControllerListener);
     randomYOffsets = List.generate(
       widget.cuboidsTotalCount,
-      (index) => random.nextDoubleRange(maxRandomYOffset),
+      (index) => random.nextDoubleRange(widget.maxRandomYOffset),
     );
   }
 
@@ -83,12 +70,10 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
     return CustomPaint(
       painter: GenArtCanvasPainter(
         randomYOffsets: randomYOffsets,
-        cuboidsMainAxisCount: widget.cuboidsMainAxisCount,
-        cuboidsCrossAxisCount: widget.cuboidsCrossAxisCount,
-        maxRandomYOffset: maxRandomYOffset,
-        initialGap: 30,
+        maxRandomYOffset: widget.maxRandomYOffset,
+        cuboidsTotalCount: widget.cuboidsTotalCount,
+        initialGap: widget.initialGap,
         animationController: animationController,
-        random: random,
       ),
     );
   }
@@ -96,55 +81,35 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
 
 class GenArtCanvasPainter extends CustomPainter {
   GenArtCanvasPainter({
-    this.cuboidsMainAxisCount = 0,
-    this.cuboidsCrossAxisCount = 0,
-    this.initialGap = 20,
-    required this.random,
+    this.cuboidsTotalCount = 0,
+    this.initialGap = 10,
     this.yScale = 0.5,
     this.maxRandomYOffset = 50,
     required this.randomYOffsets,
     required AnimationController animationController,
-  })  : animation = CurvedAnimation(
+  })  : assert(randomYOffsets.length == cuboidsTotalCount),
+        animation = CurvedAnimation(
           parent: animationController,
           curve: Curves.easeInOut,
         ),
-        cuboidsTotalCount = cuboidsCrossAxisCount * cuboidsMainAxisCount,
+        cuboidsCrossAxisCount = sqrt(cuboidsTotalCount / 2).toInt(),
+        cuboidsMainAxisCount = (2 * cuboidsTotalCount).toInt(),
         super(repaint: animationController);
 
-  // {
-  // xCount = (size.width / (diagonal + initialGap * 0.5)).ceil() - 2;
-  // yCount = ((size.height * 0.6) / ((diagonal * yScale) / 2)).floor();
-  // totalCount = xCount * yCount;
-  //
-  // initialOffsets = List.generate(
-  //   totalCount,
-  //   (index) {
-  //     int i = index % xCount;
-  //     int j = index ~/ xCount;
-  //     final dx = (diagonal * i) +
-  //         (j.isOdd ? diagonal / 2 + initialGap / 2 : 0) +
-  //         initialGap * i;
-  //     final dy = (diagonal * yScale * 0.5) * j + initialGap * yScale * j;
-  //     return Offset(dx, dy);
-  //   },
-  // );
-  //
-  // offsetAnimations = List.generate(
-  //   totalCount,
-  //   (index) {
-  //     return Tween<Offset>(
-  //       begin: initialOffsets[index],
-  //       end: initialOffsets[index] + Offset(0, randomYOffsets[index]),
-  //     ).animate(animation);
-  //   },
-  // );
-  // }
-
+  /// If [direction] is [Axis.vertical], this will be the number
+  /// of cuboids on the vertical axis
+  /// If [direction] is [Axis.horizontal], this will be the number
+  /// of cuboids on the horizontal axis
   final int cuboidsMainAxisCount;
+
+  /// If [direction] is [Axis.vertical], this will be the number
+  /// of cuboids on the horizontal axis
+  /// If [direction] is [Axis.horizontal], this will be the number
+  /// of cuboids on the vertical axis
   final int cuboidsCrossAxisCount;
+
   final int cuboidsTotalCount;
   final double initialGap;
-  final Random random;
   final double yScale;
   final double maxRandomYOffset;
   late final Animation<double> animation;
@@ -158,14 +123,6 @@ class GenArtCanvasPainter extends CustomPainter {
 
   final skewedScaleX = 0.5 * sqrt(2);
 
-  // double get newHeight => diagonal * yScale + side;
-
-  // Path get newRect => Path()
-  //   ..addRect(
-  //     Rect.fromLTWH(0, 0, diagonal + initialGap,
-  //         ((diagonal * yScale) / 2) + initialGap * yScale),
-  //   );
-
   @override
   void paint(Canvas canvas, Size size) {
     final gap = initialGap;
@@ -176,27 +133,20 @@ class GenArtCanvasPainter extends CustomPainter {
       int j = index ~/ cuboidsCrossAxisCount;
       int i = index % cuboidsCrossAxisCount;
 
-      double xOffset =
+      final xOffset =
           (diagonal * i) + (j.isOdd ? diagonal / 2 + gap / 2 : 0) + gap * i;
-      double yOffset = (diagonal * yScale * 0.5) * j + gap * yScale * j;
-      // yOffset += randomYOffsets[index];
+      final yOffset = (diagonal * yScale * 0.5) * j + gap * yScale * j;
+      final beginOffset = Offset(xOffset, yOffset);
+      final endOffset =
+          Offset(beginOffset.dx, beginOffset.dy + randomYOffsets[index]);
+      final animatedYOffset =
+          Offset.lerp(beginOffset, endOffset, animation.value) ?? beginOffset;
       canvas.save();
       // Move the canvas to offset of next cuboid
-      canvas.translate(xOffset, yOffset);
+      canvas.translate(animatedYOffset.dx, animatedYOffset.dy);
       _paintCuboid(canvas, size, diagonal);
-      // canvas.drawPath(initialRect, strokePaint);
-      // canvas.drawPath(newRect, strokePaint);
       canvas.restore();
     }
-    // for (final offsetAnimation in offsetAnimations) {
-    //   canvas.save();
-    //   // Move the canvas to offset of next cuboid
-    //   canvas.translate(offsetAnimation.value.dx, offsetAnimation.value.dy);
-    //   _paintCuboid(canvas, side);
-    //   // canvas.drawPath(initialRect, strokePaint);
-    //   canvas.drawPath(newRect, strokePaint);
-    //   canvas.restore();
-    // }
   }
 
   _paintCuboid(Canvas canvas, Size size, double diagonal) {

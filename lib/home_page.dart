@@ -8,7 +8,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const ratio = 2.5 / 4;
+    const ratio = 1080/1920;
     return Scaffold(
       body: Center(
         child: FittedBox(
@@ -16,8 +16,7 @@ class HomePage extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.width * ratio,
             child: Container(
-              margin: const EdgeInsets.all(0),
-              decoration: BoxDecoration(border: Border.all(color: Colors.red)),
+              margin: const EdgeInsets.all(20),
               child: CuboidsGenArtCanvas(),
             ),
           ),

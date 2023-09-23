@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gen_art_canvas/cuboids/models/cuboid_data.dart';
-import 'package:gen_art_canvas/cuboids/models/cuboid_face_data.dart';
+import 'package:gen_art_canvas/cuboids/data/cuboid_data.dart';
+import 'package:gen_art_canvas/cuboids/data/cuboid_face_data.dart';
 
 final cuboids = [
   CuboidData(

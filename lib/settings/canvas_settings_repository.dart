@@ -27,7 +27,6 @@ class CanvasSettingsRepository implements FirestoreRepository {
   }
 }
 
-final canvasSettingsRepositoryProvider =
-    Provider<CanvasSettingsRepository>((ref) {
-  return CanvasSettingsRepository(FirebaseFirestore.instance);
-});
+final canvasSettingsRepositoryProvider = Provider<CanvasSettingsRepository>(
+  (ref) => CanvasSettingsRepository(FirebaseFirestore.instance),
+);

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/auth/data/artist.dart';
 import 'package:gen_art_canvas/auth/data/auth_service.dart';
+import 'package:gen_art_canvas/auth/widgets/artist_home_info.dart';
 import 'package:gen_art_canvas/auth/widgets/artist_nickname_dialog.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboids_creator_bottom_sheet.dart';
@@ -85,21 +86,11 @@ class _HomePageState extends ConsumerState<HomePage> {
                 if (widget.authArtist != null)
                   Positioned(
                     top: MediaQuery.of(context).padding.top + 5,
-                    left: 5,
-                    child: Row(
-                      children: [
-                        const Text('Welcome, '),
-                        InkWell(
-                          onTap: () {},
-                          child: Text(
-                            '${widget.authArtist!.nickname} 🧑🏻‍🎨!',
-                            style: const TextStyle(
-                              color: AppColors.primary,
-                              decoration: TextDecoration.underline,
-                            ),
-                          ),
-                        )
-                      ],
+                    left: 10,
+                    child: ArtistHomeInfo(
+                      widget.authArtist!,
+                      onSignOut: () =>
+                          ref.watch(authServiceProvider).signArtistOut(),
                     ),
                   ),
                 Positioned(

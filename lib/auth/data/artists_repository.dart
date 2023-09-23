@@ -24,12 +24,12 @@ class ArtistsRepository extends FirestoreRepository<Artist> {
     required String nickname,
   }) async {
     await collection.doc(uid).set(
-      Artist(
-        id: uid,
-        nickname: nickname,
-        joinedAt: DateTime.now(),
-      ),
-    );
+          Artist(
+            id: uid,
+            nickname: nickname,
+            joinedAt: DateTime.now(),
+          ),
+        );
   }
 
   Stream<List<Artist>> watchArtists() {
@@ -41,6 +41,14 @@ class ArtistsRepository extends FirestoreRepository<Artist> {
   Future<Artist?> getArtist(String uid) async {
     final artistDoc = await collection.doc(uid).get();
     return artistDoc.data();
+  }
+
+  Future<void> deleteArtist(String uid) {
+    return collection.doc(uid).delete();
+  }
+
+  Stream<Artist?> watchArtist(String uid) {
+    return collection.doc(uid).snapshots().map((event) => event.data());
   }
 }
 

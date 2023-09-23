@@ -28,6 +28,14 @@ class AuthService {
     }
     return null;
   }
+
+  Future<void> signArtistOut() async {
+    final user = _authRepository.currentUser;
+    if (user != null) {
+      await _artistsRepository.deleteArtist(user.uid);
+      await _authRepository.signOut();
+    }
+  }
 }
 
 final authServiceProvider = Provider<AuthService>(

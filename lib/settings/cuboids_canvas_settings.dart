@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:gen_art_canvas/core/style/app_colors.dart';
 
 class CuboidsCanvasSettings extends Equatable {
   const CuboidsCanvasSettings({
@@ -15,10 +16,17 @@ class CuboidsCanvasSettings extends Equatable {
   factory CuboidsCanvasSettings.fromMap(Map<String, dynamic> data) {
     final cuboidsTotalCount = data['cuboidsTotalCount'] as int;
     final maxRandomYOffset = data['maxRandomYOffset'].toDouble();
+    final defaultPrimaryColorHex = data['defaultPrimaryColorHex'] as String?;
+    final defaultPrimaryColor = defaultPrimaryColorHex != null
+        ? Color(int.parse('0xFF$defaultPrimaryColorHex'))
+        : null;
 
     return CuboidsCanvasSettings(
       cuboidsTotalCount: cuboidsTotalCount,
       maxRandomYOffset: maxRandomYOffset,
+      defaultPrimaryColor: defaultPrimaryColor != null
+          ? AppColors.getMaterialColorFromColor(defaultPrimaryColor)
+          : Colors.grey,
     );
   }
 

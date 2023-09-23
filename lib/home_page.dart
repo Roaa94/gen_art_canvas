@@ -1,6 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
+import 'package:gen_art_canvas/cuboids/models/cuboids_canvas_settings.dart';
 import 'package:gen_art_canvas/cuboids_gen_art_canvas.dart';
 
 class HomePage extends StatelessWidget {
@@ -8,19 +7,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const ratio = 1080/1920;
     return Scaffold(
-      body: Align(
-        alignment: Alignment.bottomCenter,
-        child: FittedBox(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * ratio,
-            child: CuboidsGenArtCanvas(
-              initialGap: MediaQuery.of(context).size.width * 0.02,
-            ),
-          ),
-        ),
+      body: CuboidsGenArtCanvas(
+        settings: const CuboidsCanvasSettings(),
+        initialGap: MediaQuery.of(context).size.width * 0.02,
       ),
     );
   }

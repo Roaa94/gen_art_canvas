@@ -31,7 +31,7 @@ class _ArtistNicknameDialogState extends State<ArtistNicknameDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text('Pick your artist nickname 🧑🏻‍🎨'),
+      title: const Text('Pick your artist nickname'),
       content: Form(
         key: _formKey,
         child: TextFormField(
@@ -57,7 +57,7 @@ class _ArtistNicknameDialogState extends State<ArtistNicknameDialog> {
           onPressed: widget.isLoading ? null : () => _submit(context),
           child: widget.isLoading
               ? const CircularProgressIndicator()
-              : const Text('Start 🎨'),
+              : const Text('Start'),
         ),
       ],
     );

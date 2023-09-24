@@ -108,7 +108,7 @@ class _HomePageState extends ConsumerState<CuboidsCanvasHomePage> {
                             ),
                           ],
                         ),
-                        child: const Text('Start Creating 🎨'),
+                        child: const Text('Start Creating'),
                       ),
                     ),
                   ),

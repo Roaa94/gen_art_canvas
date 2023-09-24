@@ -22,7 +22,7 @@ class ArtistHomeInfo extends ConsumerWidget {
           children: [
             const Text('Welcome, '),
             Text(
-              '${artist.nickname} 🧑🏻‍🎨!',
+              '${artist.nickname}!',
               style: const TextStyle(color: AppColors.primary),
             ),
             IconButton(

@@ -2,9 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/auth/data/artists_repository.dart';
+import 'package:gen_art_canvas/cuboids/data/cuboid.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboid_face.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboid_form_data.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboids_repository.dart';
+import 'package:gen_art_canvas/settings/cuboids_canvas_settings_provider.dart';
 
 class CuboidsService {
   CuboidsService(
@@ -39,6 +41,12 @@ class CuboidsService {
       log(e.toString());
     }
   }
+
+  Stream<List<Cuboid>> watchCuboids({int limit = 1}) {
+    return _cuboidsRepository.watchCuboids(limit: limit).map(
+          (cuboids) => cuboids.where((cuboid) => cuboid.isValid).toList(),
+        );
+  }
 }
 
 final cuboidsServiceProvider = Provider<CuboidsService>((ref) {
@@ -46,4 +54,11 @@ final cuboidsServiceProvider = Provider<CuboidsService>((ref) {
     ref.watch(cuboidsRepositoryProvider),
     ref.watch(artistsRepositoryProvider),
   );
+});
+
+final cuboidsProvider = StreamProvider<List<Cuboid>>((ref) {
+  final settings = ref.watch(cuboidsCanvasSettingsProvider).value;
+  return ref
+      .watch(cuboidsServiceProvider)
+      .watchCuboids(limit: settings?.cuboidsTotalCount ?? 1);
 });

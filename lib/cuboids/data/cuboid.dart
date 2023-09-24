@@ -49,5 +49,6 @@ class Cuboid extends Equatable {
         topFace,
         rightFace,
         leftFace,
+        createdAt,
       ];
 }

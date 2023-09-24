@@ -7,19 +7,14 @@ import 'package:gen_art_canvas/auth/data/auth_service.dart';
 import 'package:gen_art_canvas/auth/widgets/artist_home_info.dart';
 import 'package:gen_art_canvas/auth/widgets/artist_nickname_dialog.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
+import 'package:gen_art_canvas/cuboids/data/cuboids_service.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboids_creator_bottom_sheet.dart';
-import 'package:gen_art_canvas/data.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboids_gen_art_canvas.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings_provider.dart';
 
 class HomePage extends ConsumerStatefulWidget {
-  const HomePage({
-    super.key,
-    // this.authArtist,
-  });
-
-  // final Artist? authArtist;
+  const HomePage({super.key});
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -56,6 +51,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     final authArtist = ref.watch(authArtistProvider).value;
+    final cuboids = ref.watch(cuboidsProvider).value;
 
     return Scaffold(
       body: ref.watch(cuboidsCanvasSettingsProvider).when(
@@ -64,7 +60,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 CuboidsGenArtCanvas(
                   settings: settings,
                   initialGap: MediaQuery.of(context).size.width * 0.02,
-                  cuboidsData: [],
+                  cuboidsData: cuboids?.reversed.toList() ?? [],
                 ),
                 if (authArtist != null)
                   Positioned(

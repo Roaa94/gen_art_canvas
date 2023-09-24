@@ -38,11 +38,18 @@ class CuboidsRepository implements FirestoreRepository {
         );
   }
 
-  Stream<List<Cuboid>> watchCuboids() {
-    return collection.snapshots().map((snapshot) => snapshot.docs
-        .map((e) => e.data())
-        .where((Cuboid cuboid) => cuboid.isValid)
-        .toList());
+  Stream<List<Cuboid>> watchCuboids({int limit = 1}) {
+    return collection
+        .where(
+          'createdAt',
+          isGreaterThan: Timestamp.fromDate(
+            DateTime.now().subtract(const Duration(days: 1)),
+          ),
+        )
+        .orderBy('createdAt', descending: true)
+        .limit(limit)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((e) => e.data()).toList());
   }
 }
 

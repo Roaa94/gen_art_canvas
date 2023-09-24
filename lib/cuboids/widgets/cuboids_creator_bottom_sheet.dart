@@ -64,7 +64,7 @@ class _CuboidsCreatorBottomSheetState
 
   @override
   Widget build(BuildContext context) {
-    final cuboidPreviewSectionHeight = MediaQuery.of(context).size.height * 0.3;
+    final cuboidPreviewSectionHeight = MediaQuery.of(context).size.height * 0.35;
     final activeFaceIndex = ref.watch(activeFaceIndexProvider);
     final activeFace = CuboidFaceDirection.values[activeFaceIndex];
     final cuboidFormData = ref.watch(cuboidFormProvider);
@@ -84,7 +84,7 @@ class _CuboidsCreatorBottomSheetState
               children: [
                 Text(
                   'Create Your Cuboid!',
-                  style: Theme.of(context).textTheme.headlineSmall,
+                  style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Text(
                   'This canvas is for everyone to create on, contribute to the artwork by adding your own cuboid!',

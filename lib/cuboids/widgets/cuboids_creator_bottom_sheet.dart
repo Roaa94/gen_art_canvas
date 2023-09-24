@@ -4,10 +4,12 @@ import 'package:gen_art_canvas/auth/data/artist.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboid_form_data.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboid_form_provider.dart';
+import 'package:gen_art_canvas/cuboids/data/cuboids_service.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboid_face_form.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
 final activeFaceIndexProvider = StateProvider<int>((ref) => 0);
+final isLoadingSubmitProvider = StateProvider<bool>((ref) => false);
 
 class CuboidsCreatorBottomSheet extends ConsumerStatefulWidget {
   const CuboidsCreatorBottomSheet({
@@ -33,6 +35,21 @@ class _CuboidsCreatorBottomSheetState
     ref.read(activeFaceIndexProvider.notifier).state = 0;
     ref.read(cuboidFormProvider.notifier).reset();
     pageController.jumpTo(0);
+  }
+
+  void _submitCuboid(CuboidFormData formData) {
+    ref.read(isLoadingSubmitProvider.notifier).state = true;
+    ref
+        .read(cuboidsServiceProvider)
+        .addCuboid(
+          artistId: widget.authArtist.id,
+          formData: formData,
+        )
+        .then((value) {
+      _resetProgress();
+      ref.read(isLoadingSubmitProvider.notifier).state = false;
+      Navigator.of(context).pop();
+    });
   }
 
   @override
@@ -169,22 +186,42 @@ class _CuboidsCreatorBottomSheetState
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeInOut,
                     child: InkWell(
-                      onTap: isCuboidFormValid ? () {} : null,
-                      child: Container(
+                      onTap: isCuboidFormValid
+                          ? () => _submitCuboid(cuboidFormData)
+                          : null,
+                      child: ColoredBox(
                         color: AppColors.primary,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 10, vertical: 12),
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              'Submit Your Cuboid',
-                              style: TextStyle(color: Colors.black),
-                            ),
-                            SizedBox(width: 10),
-                            Icon(Icons.send, size: 15, color: Colors.black),
-                          ],
-                        ),
+                        child: ref.watch(isLoadingSubmitProvider)
+                            ? const SizedBox(
+                                width: 40,
+                                height: 40,
+                                child: Center(
+                                  child: CircularProgressIndicator(
+                                    color: AppColors.firebaseDarkGrey,
+                                  ),
+                                ),
+                              )
+                            : const Padding(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 12,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Submit Your Cuboid',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    SizedBox(width: 10),
+                                    Icon(
+                                      Icons.send,
+                                      size: 15,
+                                      color: Colors.black,
+                                    ),
+                                  ],
+                                ),
+                              ),
                       ),
                     ),
                   ),

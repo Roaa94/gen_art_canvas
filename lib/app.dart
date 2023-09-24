@@ -17,22 +17,23 @@ class GenArtCanvasApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: AppThemes.theme,
       themeMode: ThemeMode.dark,
-      home: ref.watch(authArtistProvider).when(
-            data: (Artist? authArtist) => HomePage(
-              authArtist: authArtist,
-            ),
-            error: (e, _) {
-              log('An error occurred while loading authenticated artist');
-              log(e.toString());
-
-              return const Scaffold(
-                body: Center(
-                  child: Text('An Error Occurred!'),
-                ),
-              );
-            },
-            loading: () => const Scaffold(),
-          ),
+      home: const HomePage(),
+      // home: ref.watch(authArtistProvider).when(
+      //       data: (Artist? authArtist) => HomePage(
+      //         authArtist: authArtist,
+      //       ),
+      //       error: (e, _) {
+      //         log('An error occurred while loading authenticated artist');
+      //         log(e.toString());
+      //
+      //         return const Scaffold(
+      //           body: Center(
+      //             child: Text('An Error Occurred!'),
+      //           ),
+      //         );
+      //       },
+      //       loading: () => const Scaffold(),
+      //     ),
     );
   }
 }

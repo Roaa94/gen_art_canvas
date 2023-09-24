@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/auth/data/artist.dart';
 import 'package:gen_art_canvas/auth/data/artists_repository.dart';
@@ -45,6 +46,14 @@ final authServiceProvider = Provider<AuthService>(
   ),
 );
 
+final authUserProvider = StreamProvider<User?>(
+  (ref) => ref.watch(authRepositoryProvider).watchUser(),
+);
+
 final authArtistProvider = StreamProvider<Artist?>((ref) {
-  return ref.watch(authServiceProvider).watchAuthArtist();
+  final authUser = ref.watch(authUserProvider).value;
+  if (authUser != null) {
+    return ref.watch(artistsRepositoryProvider).watchArtist(authUser.uid);
+  }
+  return Stream.value(null);
 });

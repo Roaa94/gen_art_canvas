@@ -31,6 +31,20 @@ class ArtistsRepository extends FirestoreRepository<Artist> {
         );
   }
 
+  Future<void> updateArtist({
+    required String id,
+    String? nickname,
+    int? createdCuboidsCount,
+  }) async {
+    await collection.doc(id).update(
+      {
+        if (nickname != null) 'nickname': nickname,
+        if (createdCuboidsCount != null)
+          'createdCuboidsCount': createdCuboidsCount,
+      },
+    );
+  }
+
   Stream<List<Artist>> watchArtists() {
     return collection
         .snapshots()

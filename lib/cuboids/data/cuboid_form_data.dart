@@ -20,6 +20,9 @@ class CuboidFaceFormData extends Equatable {
   });
 
   bool get isValid {
+    if (fillType == null) {
+      return false;
+    }
     if (fillType == CuboidFaceFillType.fill) {
       return fillColor != null;
     }

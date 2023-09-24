@@ -19,6 +19,8 @@ class Cuboid extends Equatable {
   final CuboidFace rightFace;
   final CuboidFace leftFace;
 
+  bool get isValid => topFace.isValid && rightFace.isValid && leftFace.isValid;
+
   factory Cuboid.fromMap(Map<String, dynamic> data, String id) {
     return Cuboid(
       id: id,

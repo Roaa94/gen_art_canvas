@@ -16,10 +16,10 @@ import 'package:gen_art_canvas/settings/cuboids_canvas_settings_provider.dart';
 class HomePage extends ConsumerStatefulWidget {
   const HomePage({
     super.key,
-    this.authArtist,
+    // this.authArtist,
   });
 
-  final Artist? authArtist;
+  // final Artist? authArtist;
 
   @override
   ConsumerState<HomePage> createState() => _HomePageState();
@@ -40,35 +40,23 @@ class _HomePageState extends ConsumerState<HomePage> {
   void _showCreatorBottomSheet(
     BuildContext context,
     CuboidsCanvasSettings settings,
+    Artist authArtist,
   ) {
-    if (widget.authArtist == null) {
-      log('Auth artist not found!');
-      return;
-    }
-    final screenSize = MediaQuery.of(context).size;
     showModalBottomSheet(
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
       builder: (context) => CuboidsCreatorBottomSheet(
         settings: settings,
-        authArtist: widget.authArtist!,
+        authArtist: authArtist,
       ),
     );
   }
 
   @override
-  void initState() {
-    if (widget.authArtist == null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _showNicknameDialog(context);
-      });
-    }
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final authArtist = ref.watch(authArtistProvider).value;
+
     return Scaffold(
       body: ref.watch(cuboidsCanvasSettingsProvider).when(
             data: (CuboidsCanvasSettings settings) => Stack(
@@ -76,14 +64,14 @@ class _HomePageState extends ConsumerState<HomePage> {
                 CuboidsGenArtCanvas(
                   settings: settings,
                   initialGap: MediaQuery.of(context).size.width * 0.02,
-                  cuboidsData: cuboids,
+                  cuboidsData: [],
                 ),
-                if (widget.authArtist != null)
+                if (authArtist != null)
                   Positioned(
                     top: MediaQuery.of(context).padding.top + 5,
                     left: 10,
                     child: ArtistHomeInfo(
-                      widget.authArtist!,
+                      authArtist,
                       onSignOut: () =>
                           ref.watch(authServiceProvider).signArtistOut(),
                     ),
@@ -94,9 +82,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                   bottom: 0,
                   child: Center(
                     child: InkWell(
-                      onTap: widget.authArtist == null
+                      onTap: authArtist == null
                           ? () => _showNicknameDialog(context)
-                          : () => _showCreatorBottomSheet(context, settings),
+                          : () => _showCreatorBottomSheet(
+                                context,
+                                settings,
+                                authArtist,
+                              ),
                       child: Container(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 20,

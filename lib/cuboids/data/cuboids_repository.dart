@@ -13,12 +13,18 @@ class CuboidsRepository implements FirestoreRepository {
 
   CollectionReference<Cuboid> get collection =>
       _firestore.collection(collectionName).withConverter(
-        fromFirestore: (snapshot, _) =>
-            Cuboid.fromMap(snapshot.data()!, snapshot.id),
-        toFirestore: (cuboid, _) => cuboid.toMap(),
-      );
+            fromFirestore: (snapshot, _) =>
+                Cuboid.fromMap(snapshot.data()!, snapshot.id),
+            toFirestore: (cuboid, _) => cuboid.toMap(),
+          );
+
+  Stream<List<Cuboid>> watchCuboids() {
+    return collection
+        .snapshots()
+        .map((snapshot) => snapshot.docs.map((e) => e.data()).toList());
+  }
 }
 
 final cuboidsRepositoryProvider = Provider<CuboidsRepository>(
-      (ref) => CuboidsRepository(FirebaseFirestore.instance),
+  (ref) => CuboidsRepository(FirebaseFirestore.instance),
 );

@@ -8,11 +8,13 @@ final cuboidFormProvider = NotifierProvider<CuboidFormNotifier, CuboidFormData>(
 class CuboidFormNotifier extends Notifier<CuboidFormData> {
   @override
   CuboidFormData build() {
-    return {
-      for (final face in CuboidFaceDirection.values)
-        face: const CuboidFaceFormData(),
-    };
+    return _buildEmpty();
   }
+
+  CuboidFormData _buildEmpty() => {
+        for (final face in CuboidFaceDirection.values)
+          face: const CuboidFaceFormData(),
+      };
 
   updateFaceFormData(CuboidFaceDirection face, CuboidFaceFormData formData) {
     state = {
@@ -21,8 +23,18 @@ class CuboidFormNotifier extends Notifier<CuboidFormData> {
     };
   }
 
+  getIfEmpty() {
+    return CuboidFaceDirection.values.every((direction) {
+      return state[direction] == null || state[direction]!.isEmpty;
+    });
+  }
+
   getIfFaceFormIsValid(CuboidFaceDirection face) {
     return state[face] != null && state[face]!.isValid;
+  }
+
+  reset() {
+    state = _buildEmpty();
   }
 
   getIfCuboidFormIsValid() {

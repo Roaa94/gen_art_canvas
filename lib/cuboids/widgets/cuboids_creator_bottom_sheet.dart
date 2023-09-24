@@ -29,6 +29,12 @@ class _CuboidsCreatorBottomSheetState
   late final PageController pageController;
   static const double cuboidPreviewSectionHeight = 220;
 
+  void _resetProgress() {
+    ref.read(activeFaceIndexProvider.notifier).state = 0;
+    ref.read(cuboidFormProvider.notifier).reset();
+    pageController.jumpTo(0);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -46,6 +52,8 @@ class _CuboidsCreatorBottomSheetState
         ref.watch(cuboidFormProvider.notifier).getIfCuboidFormIsValid();
     final isActiveFaceFormValid =
         ref.watch(cuboidFormProvider.notifier).getIfFaceFormIsValid(activeFace);
+    final isCuboidFormEmpty =
+        ref.watch(cuboidFormProvider.notifier).getIfEmpty();
 
     return SizedBox.expand(
       child: Column(
@@ -128,10 +136,34 @@ class _CuboidsCreatorBottomSheetState
                     color: Colors.black.withOpacity(0.3),
                   ),
                 ),
+                if (!isCuboidFormEmpty)
+                  AnimatedPositioned(
+                    bottom: 10 + (isCuboidFormValid ? 50 : 0),
+                    left: 0,
+                    right: 10,
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: InkWell(
+                        onTap: _resetProgress,
+                        child: Text(
+                          'Reset Progress',
+                          style:
+                              Theme.of(context).textTheme.labelSmall!.copyWith(
+                                    color: AppColors.primary,
+                                    decoration: TextDecoration.underline,
+                                    decorationColor: AppColors.primary,
+                                  ),
+                        ),
+                      ),
+                    ),
+                  ),
                 Positioned(
                   bottom: 0,
                   left: 0,
                   right: 0,
+                  height: 50,
                   child: AnimatedSlide(
                     offset: Offset(0, isCuboidFormValid ? 0 : 1),
                     duration: const Duration(milliseconds: 300),
@@ -179,7 +211,6 @@ class _CuboidsCreatorBottomSheetState
         CuboidFaceDirection.values.length,
         (index) => SingleChildScrollView(
           padding: const EdgeInsets.only(
-            top: 20,
             bottom: cuboidPreviewSectionHeight + 20,
           ),
           child: CuboidFaceForm(

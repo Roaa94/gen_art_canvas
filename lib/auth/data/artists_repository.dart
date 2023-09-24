@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/auth/data/artist.dart';
-import 'package:gen_art_canvas/auth/data/auth_repository.dart';
 import 'package:gen_art_canvas/core/data/firestore_repository.dart';
 
 class ArtistsRepository extends FirestoreRepository<Artist> {

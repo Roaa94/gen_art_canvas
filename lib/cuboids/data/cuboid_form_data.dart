@@ -26,6 +26,8 @@ class CuboidFaceFormData extends Equatable {
     return false;
   }
 
+  bool get isEmpty => fillType == null && fillColor == null;
+
   bool get formHasFillTypePicked => true;
 
   bool get formHasFillColorPicker => true;

@@ -69,7 +69,7 @@ class FormPreviewCuboidPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    return false;
+  bool shouldRepaint(covariant FormPreviewCuboidPainter oldDelegate) {
+    return oldDelegate.formData != formData;
   }
 }

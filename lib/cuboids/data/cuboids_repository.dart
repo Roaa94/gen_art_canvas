@@ -43,7 +43,7 @@ class CuboidsRepository implements FirestoreRepository {
         .where(
           'createdAt',
           isGreaterThan: Timestamp.fromDate(
-            DateTime.now().subtract(const Duration(days: 1)),
+            DateTime.now().subtract(const Duration(hours: 1)),
           ),
         )
         .orderBy('createdAt', descending: true)

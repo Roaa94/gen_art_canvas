@@ -23,6 +23,12 @@ class CuboidFaceForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final pickerColors = face == CuboidFaceDirection.left
+        ? colors.map((e) => e.toMaterial().shade800).toList()
+        : face == CuboidFaceDirection.right
+            ? colors.map((e) => e.toMaterial().shade600).toList()
+            : colors;
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -45,7 +51,7 @@ class CuboidFaceForm extends StatelessWidget {
           subtitle: 'Pick the fill color of your picked fill type',
         ),
         ColorPicker(
-          colors: colors,
+          colors: pickerColors,
           padding: const EdgeInsets.symmetric(horizontal: 20),
           selectedColor: formData.fillColor,
           onChanged: (Color color) =>

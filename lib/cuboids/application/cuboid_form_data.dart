@@ -19,7 +19,7 @@ class CuboidFaceFormData extends Equatable {
     this.fillColor,
     this.strokeColor,
     this.strokeWidth = 1,
-    this.intensity = 1,
+    this.intensity = 10,
   });
 
   final CuboidFaceFillType fillType;

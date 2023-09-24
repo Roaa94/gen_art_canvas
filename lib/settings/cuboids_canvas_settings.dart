@@ -4,12 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
 
+const defaultColors = [
+  AppColors.firebaseOrange,
+  AppColors.firebaseYellow,
+  AppColors.firebaseGrey,
+  AppColors.googleBlue600,
+  AppColors.firebaseNavy,
+  AppColors.firebaseDarkGrey,
+];
+
 class CuboidsCanvasSettings extends Equatable {
   const CuboidsCanvasSettings({
     this.cuboidsTotalCount = 100,
     this.maxRandomYOffset = 170,
     this.defaultPrimaryColor = Colors.grey,
-    this.colors = const [],
+    this.colors = defaultColors,
     this.fillTypes = const [],
   });
 
@@ -47,7 +56,7 @@ class CuboidsCanvasSettings extends Equatable {
       defaultPrimaryColor:
           AppColors.fromHex(defaultPrimaryColorHex)?.toMaterial() ??
               Colors.grey,
-      colors: parsedColors,
+      colors: parsedColors.isEmpty ? defaultColors : parsedColors,
       fillTypes: parsedFillTypes,
     );
   }

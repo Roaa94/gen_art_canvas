@@ -36,7 +36,7 @@ class CuboidsCanvasArtistPage extends ConsumerWidget {
                   children: [
                     Padding(
                       padding:
-                          const EdgeInsets.only(top: 10, bottom: 20, left: 10),
+                          const EdgeInsets.only(top: 5, bottom: 10, left: 10),
                       child: ArtistHomeInfo(
                         authArtist,
                         onSignOut: () =>

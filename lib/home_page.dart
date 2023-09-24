@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gen_art_canvas/auth/data/artist.dart';
-import 'package:gen_art_canvas/auth/data/auth_service.dart';
+import 'package:gen_art_canvas/auth/domain/artist.dart';
+import 'package:gen_art_canvas/auth/application/auth_service.dart';
 import 'package:gen_art_canvas/auth/widgets/artist_home_info.dart';
 import 'package:gen_art_canvas/auth/widgets/artist_nickname_dialog.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboids_service.dart';
+import 'package:gen_art_canvas/cuboids/application/cuboids_service.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboids_creator_bottom_sheet.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboids_gen_art_canvas.dart';

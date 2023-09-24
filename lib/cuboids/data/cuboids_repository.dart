@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/core/data/firestore_repository.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_face.dart';
+import 'package:gen_art_canvas/cuboids/domain/cuboid.dart';
+import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
 
 class CuboidsRepository implements FirestoreRepository {
   CuboidsRepository(this._firestore);

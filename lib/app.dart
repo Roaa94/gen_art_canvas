@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gen_art_canvas/auth/data/artist.dart';
-import 'package:gen_art_canvas/auth/data/auth_service.dart';
+import 'package:gen_art_canvas/auth/domain/artist.dart';
+import 'package:gen_art_canvas/auth/application/auth_service.dart';
 import 'package:gen_art_canvas/core/style/app_themes.dart';
 import 'package:gen_art_canvas/home_page.dart';
 

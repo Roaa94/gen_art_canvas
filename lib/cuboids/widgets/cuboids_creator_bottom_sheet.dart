@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gen_art_canvas/auth/data/artist.dart';
+import 'package:gen_art_canvas/auth/domain/artist.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_form_data.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_form_provider.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboids_service.dart';
+import 'package:gen_art_canvas/cuboids/application/cuboid_form_data.dart';
+import 'package:gen_art_canvas/cuboids/application/cuboid_form_provider.dart';
+import 'package:gen_art_canvas/cuboids/application/cuboids_service.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboid_face_form.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 

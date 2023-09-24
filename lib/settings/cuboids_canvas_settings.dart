@@ -2,7 +2,7 @@ import 'package:collection/collection.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_face.dart';
+import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
 
 class CuboidsCanvasSettings extends Equatable {
   const CuboidsCanvasSettings({

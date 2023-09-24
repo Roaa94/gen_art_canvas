@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_face.dart';
+import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
 
 class Cuboid extends Equatable {
   const Cuboid({

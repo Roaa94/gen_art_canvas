@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gen_art_canvas/auth/data/artist.dart';
+import 'package:gen_art_canvas/auth/domain/artist.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
 
 class ArtistHomeInfo extends ConsumerWidget {

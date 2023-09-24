@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_form_data.dart';
+import 'package:gen_art_canvas/cuboids/application/cuboid_form_data.dart';
 
 final cuboidFormProvider = NotifierProvider<CuboidFormNotifier, CuboidFormData>(
   () => CuboidFormNotifier(),

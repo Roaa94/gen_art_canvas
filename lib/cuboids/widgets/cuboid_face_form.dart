@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gen_art_canvas/auth/widgets/color_picker.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_face.dart';
-import 'package:gen_art_canvas/cuboids/data/cuboid_form_data.dart';
+import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
+import 'package:gen_art_canvas/cuboids/application/cuboid_form_data.dart';
 import 'package:gen_art_canvas/cuboids/widgets/fill_type_picker.dart';
 
 class CuboidFaceForm extends StatelessWidget {

@@ -2,7 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboid_face.dart';
 
-enum CuboidFace {
+enum CuboidFaceDirection {
   top,
   left,
   right;
@@ -11,16 +11,7 @@ enum CuboidFace {
       '${name[0].toUpperCase()}${name.substring(1).toLowerCase()} Face';
 }
 
-class CuboidFormData extends Equatable {
-  const CuboidFormData({
-    this.faces = const {},
-  });
-
-  final Map<CuboidFace, CuboidFaceFormData> faces;
-
-  @override
-  List<Object?> get props => [faces];
-}
+typedef CuboidFormData = Map<CuboidFaceDirection, CuboidFaceFormData>;
 
 class CuboidFaceFormData extends Equatable {
   const CuboidFaceFormData({
@@ -34,6 +25,12 @@ class CuboidFaceFormData extends Equatable {
     }
     return false;
   }
+
+  bool get formHasFillTypePicked => true;
+
+  bool get formHasFillColorPicker => true;
+
+  bool get formHasStrokeColorPicker => fillType == CuboidFaceFillType.fill;
 
   final CuboidFaceFillType? fillType;
   final Color? fillColor;

@@ -1,25 +1,33 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboid_form_data.dart';
 
-final cuboidFormProvider =
-    NotifierProvider<CuboidFormNotifier, Map<CuboidFace, CuboidFaceFormData>>(
+final cuboidFormProvider = NotifierProvider<CuboidFormNotifier, CuboidFormData>(
   () => CuboidFormNotifier(),
 );
 
-class CuboidFormNotifier extends Notifier<Map<CuboidFace, CuboidFaceFormData>> {
+class CuboidFormNotifier extends Notifier<CuboidFormData> {
   @override
-  Map<CuboidFace, CuboidFaceFormData> build() {
+  CuboidFormData build() {
     return {
-      CuboidFace.top: const CuboidFaceFormData(),
-      CuboidFace.right: const CuboidFaceFormData(),
-      CuboidFace.left: const CuboidFaceFormData(),
+      for (final face in CuboidFaceDirection.values)
+        face: const CuboidFaceFormData(),
     };
   }
 
-  updateFaceFormData(CuboidFace face, CuboidFaceFormData formData) {
+  updateFaceFormData(CuboidFaceDirection face, CuboidFaceFormData formData) {
     state = {
       ...state,
       face: formData,
     };
+  }
+
+  getIfFaceFormIsValid(CuboidFaceDirection face) {
+    return state[face] != null && state[face]!.isValid;
+  }
+
+  getIfCuboidFormIsValid() {
+    return CuboidFaceDirection.values.every((direction) {
+      return state[direction] != null && state[direction]!.isValid;
+    });
   }
 }

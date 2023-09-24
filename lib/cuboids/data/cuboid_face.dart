@@ -53,7 +53,7 @@ enum CuboidFaceFillType {
   String get label {
     switch (this) {
       case fill:
-        return 'Fill';
+        return 'Solid Fill';
     }
   }
 }

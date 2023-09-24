@@ -18,10 +18,13 @@ class FillTypePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeFillTypeIndex = fillTypes.indexWhere((fillType) => fillType == selectedFillType);
+    final activeFillTypeIndex =
+        fillTypes.indexWhere((fillType) => fillType == selectedFillType);
+    final labelTextStyle = Theme.of(context).textTheme.labelSmall!;
+    const spacing = 5.0;
 
     return SizedBox(
-      height: height,
+      height: height + spacing + (labelTextStyle.fontSize ?? 0),
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         scrollDirection: Axis.horizontal,
@@ -36,7 +39,7 @@ class FillTypePicker extends StatelessWidget {
                   height: height,
                   width: height,
                   decoration: BoxDecoration(
-                    color: AppColors.primary,
+                    color: AppColors.firebaseDarkGrey,
                     borderRadius: BorderRadius.circular(3),
                     border: Border.all(
                       color: Colors.white.withOpacity(
@@ -45,10 +48,13 @@ class FillTypePicker extends StatelessWidget {
                       width: activeFillTypeIndex == index ? 3 : 1,
                     ),
                   ),
-                  child: Center(
-                    child: Text(fillTypes[index].label),
-                  ),
                 ),
+              ),
+              const SizedBox(height: spacing),
+              Text(
+                fillTypes[index].label,
+                style: labelTextStyle.copyWith(height: 1),
+                maxLines: 1,
               ),
             ],
           ),

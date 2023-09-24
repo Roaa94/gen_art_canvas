@@ -22,41 +22,19 @@ class CuboidsCreatorBottomSheet extends StatefulWidget {
 
 class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
   final pageController = PageController();
-  CuboidFaceFormData topFaceFormData = const CuboidFaceFormData();
-  CuboidFaceFormData leftFaceFormData = const CuboidFaceFormData();
-  CuboidFaceFormData rightFaceFormData = const CuboidFaceFormData();
-
   static const double cuboidPreviewSectionHeight = 170;
 
   int activePageIndex = 0;
-  final List<String> pages = [
-    'Top Face',
-    'Left Face',
-    'Right Face',
+  final List<CuboidFaceFormPage> faces = [
+    CuboidFaceFormPage(title: 'Top Face'),
+    CuboidFaceFormPage(title: 'Left Face'),
+    CuboidFaceFormPage(title: 'Right Face'),
   ];
 
-  List<CuboidFaceFormData> get formData => [
-        topFaceFormData,
-        leftFaceFormData,
-        rightFaceFormData,
-      ];
-
   void _updateFaceFormData(CuboidFaceFormData newFormData, int index) {
-    if (index == 0) {
-      setState(() {
-        topFaceFormData = newFormData;
-      });
-    }
-    if (index == 1) {
-      setState(() {
-        leftFaceFormData = newFormData;
-      });
-    }
-    if (index == 2) {
-      setState(() {
-        rightFaceFormData = newFormData;
-      });
-    }
+    setState(() {
+      faces[index] = faces[index].copyWith(formData: newFormData);
+    });
   }
 
   @override
@@ -81,7 +59,9 @@ class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
                   icon: const Icon(Icons.arrow_back_ios, size: 15),
                 ),
                 Expanded(
-                  child: Center(child: Text(pages[activePageIndex])),
+                  child: Center(
+                    child: Text(faces[activePageIndex].title),
+                  ),
                 ),
                 Directionality(
                   textDirection: TextDirection.rtl,
@@ -104,7 +84,7 @@ class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
               padEnds: false,
               onPageChanged: (value) => setState(() => activePageIndex = value),
               children: List.generate(
-                pages.length,
+                faces.length,
                 (index) => SingleChildScrollView(
                   padding: const EdgeInsets.only(
                     top: 20,
@@ -113,7 +93,7 @@ class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
                   child: CuboidFaceForm(
                     colors: widget.settings.colors,
                     fillTypes: widget.settings.fillTypes,
-                    formData: formData[index],
+                    formData: faces[index].formData,
                     onChanged: (newFormData) =>
                         _updateFaceFormData(newFormData, index),
                   ),
@@ -145,6 +125,23 @@ class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class CuboidFaceFormPage {
+  CuboidFaceFormPage({
+    required this.title,
+    this.formData = const CuboidFaceFormData(),
+  });
+
+  final String title;
+  final CuboidFaceFormData formData;
+
+  CuboidFaceFormPage copyWith({required CuboidFaceFormData formData}) {
+    return CuboidFaceFormPage(
+      title: title,
+      formData: formData,
     );
   }
 }

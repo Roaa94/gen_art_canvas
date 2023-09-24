@@ -13,21 +13,25 @@ import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboids_gen_art_canvas.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings_provider.dart';
 
-class HomePage extends ConsumerStatefulWidget {
-  const HomePage({super.key});
+class CuboidsCanvasHomePage extends ConsumerStatefulWidget {
+  const CuboidsCanvasHomePage({super.key});
 
   @override
-  ConsumerState<HomePage> createState() => _HomePageState();
+  ConsumerState<CuboidsCanvasHomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends ConsumerState<HomePage> {
+class _HomePageState extends ConsumerState<CuboidsCanvasHomePage> {
   void _showNicknameDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (context) => ArtistNicknameDialog(
-        onSubmit: (String nickname) => ref
-            .read(authServiceProvider)
-            .signArtistInAnonymously(nickname: nickname),
+        onSubmit: (String nickname) {
+          ref
+              .read(authServiceProvider)
+              .signArtistInAnonymously(nickname: nickname);
+          Navigator.of(context).pop();
+        },
+        onCancel: () => Navigator.of(context).pop(),
       ),
     );
   }
@@ -44,6 +48,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       builder: (context) => CuboidsCreatorBottomSheet(
         settings: settings,
         authArtist: authArtist,
+        onSubmit: () => Navigator.of(context).pop(),
       ),
     );
   }

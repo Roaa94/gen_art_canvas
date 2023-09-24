@@ -78,9 +78,9 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
 
   @override
   void dispose() {
-    super.dispose();
     animationController.removeListener(_animationControllerListener);
     animationController.dispose();
+    super.dispose();
   }
 
   @override

@@ -22,8 +22,8 @@ class CuboidsUtils {
       final linesPoints = <Offset>[];
       final step = size.width / cuboidFace.intensity;
       for (int i = 0; i <= cuboidFace.intensity; i++) {
-        linesPoints.add(Offset(i * step, 0));
-        linesPoints.add(Offset(i * step, size.height));
+        linesPoints.add(Offset(i * step, 2));
+        linesPoints.add(Offset(i * step, size.height - 2));
       }
       canvas.drawPoints(
         PointMode.lines,

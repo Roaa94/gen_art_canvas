@@ -17,10 +17,12 @@ class CuboidsCreatorBottomSheet extends ConsumerStatefulWidget {
     super.key,
     required this.settings,
     required this.authArtist,
+    this.onSubmit,
   });
 
   final CuboidsCanvasSettings settings;
   final Artist authArtist;
+  final VoidCallback? onSubmit;
 
   @override
   ConsumerState<CuboidsCreatorBottomSheet> createState() =>
@@ -48,7 +50,7 @@ class _CuboidsCreatorBottomSheetState
         .then((value) {
       _resetProgress();
       ref.read(isLoadingSubmitProvider.notifier).state = false;
-      Navigator.of(context).pop();
+      widget.onSubmit?.call();
     });
   }
 

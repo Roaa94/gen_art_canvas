@@ -15,23 +15,20 @@ typedef CuboidFormData = Map<CuboidFaceDirection, CuboidFaceFormData>;
 
 class CuboidFaceFormData extends Equatable {
   const CuboidFaceFormData({
-    this.fillType,
+    this.fillType = CuboidFaceFillType.fill,
     this.fillColor,
     this.strokeColor,
     this.strokeWidth = 1,
     this.intensity = 1,
   });
 
-  final CuboidFaceFillType? fillType;
+  final CuboidFaceFillType fillType;
   final Color? fillColor;
   final Color? strokeColor;
   final double strokeWidth;
   final int intensity;
 
   bool get isValid {
-    if (fillType == null) {
-      return false;
-    }
     if (fillType == CuboidFaceFillType.fill) {
       return fillColor != null;
     }
@@ -49,7 +46,7 @@ class CuboidFaceFormData extends Equatable {
     return fillType == CuboidFaceFillType.lines;
   }
 
-  bool get isEmpty => fillType == null && fillColor == null;
+  bool get isEmpty => fillColor == null;
 
   bool get formHasFillTypePicked => true;
 

@@ -4,9 +4,13 @@ class ArtistNicknameDialog extends StatefulWidget {
   const ArtistNicknameDialog({
     super.key,
     this.onSubmit,
+    this.onCancel,
+    this.isLoading = false,
   });
 
   final ValueChanged<String>? onSubmit;
+  final VoidCallback? onCancel;
+  final bool isLoading;
 
   @override
   State<ArtistNicknameDialog> createState() => _ArtistNicknameDialogState();
@@ -22,7 +26,6 @@ class _ArtistNicknameDialogState extends State<ArtistNicknameDialog> {
     }
     _formKey.currentState!.save();
     if (nickname != null) widget.onSubmit?.call(nickname!);
-    Navigator.of(context).pop();
   }
 
   @override
@@ -45,13 +48,16 @@ class _ArtistNicknameDialogState extends State<ArtistNicknameDialog> {
         ),
       ),
       actions: [
-        TextButton(
-          onPressed: () => Navigator.of(context).pop(),
-          child: const Text('I Just want to watch 👀'),
-        ),
+        if (widget.onCancel != null)
+          TextButton(
+            onPressed: widget.onCancel,
+            child: const Text('I Just want to watch 👀'),
+          ),
         ElevatedButton(
-          onPressed: () => _submit(context),
-          child: const Text('Start 🎨'),
+          onPressed: widget.isLoading ? null : () => _submit(context),
+          child: widget.isLoading
+              ? const CircularProgressIndicator()
+              : const Text('Start 🎨'),
         ),
       ],
     );

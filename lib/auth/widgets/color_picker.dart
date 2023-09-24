@@ -31,7 +31,7 @@ class ColorPicker extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(right: 10),
+                padding: const EdgeInsets.only(right: 15),
                 child: InkWell(
                   onTap: () => onChanged?.call(colors[index]),
                   child: Container(

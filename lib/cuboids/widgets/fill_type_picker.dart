@@ -14,7 +14,7 @@ class FillTypePicker extends StatelessWidget {
   final ValueChanged<CuboidFaceFillType>? onChanged;
   final CuboidFaceFillType? selectedFillType;
 
-  static const double height = 80;
+  static const double height = 70;
 
   @override
   Widget build(BuildContext context) {

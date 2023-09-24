@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/auth/data/artist.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboid_form_data.dart';
+import 'package:gen_art_canvas/cuboids/data/cuboid_form_provider.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboid_face_form.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
-class CuboidsCreatorBottomSheet extends StatefulWidget {
+class CuboidsCreatorBottomSheet extends ConsumerStatefulWidget {
   const CuboidsCreatorBottomSheet({
     super.key,
     required this.settings,
@@ -16,32 +18,44 @@ class CuboidsCreatorBottomSheet extends StatefulWidget {
   final Artist authArtist;
 
   @override
-  State<CuboidsCreatorBottomSheet> createState() =>
+  ConsumerState<CuboidsCreatorBottomSheet> createState() =>
       _CuboidsCreatorBottomSheetState();
 }
 
-class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
+class _CuboidsCreatorBottomSheetState
+    extends ConsumerState<CuboidsCreatorBottomSheet> {
   final pageController = PageController();
   static const double cuboidPreviewSectionHeight = 170;
 
-  int activePageIndex = 0;
-  final List<CuboidFaceFormPage> faces = [
-    CuboidFaceFormPage(title: 'Top Face'),
-    CuboidFaceFormPage(title: 'Left Face'),
-    CuboidFaceFormPage(title: 'Right Face'),
-  ];
-
-  void _updateFaceFormData(CuboidFaceFormData newFormData, int index) {
-    setState(() {
-      faces[index] = faces[index].copyWith(formData: newFormData);
-    });
-  }
+  CuboidFace activeFace = CuboidFace.values[0];
 
   @override
   Widget build(BuildContext context) {
+    final cuboidFormData = ref.watch(cuboidFormProvider);
     return SizedBox.expand(
       child: Column(
         children: [
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              children: [
+                Text(
+                  'Create Your Cuboid!',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 10),
+                const Text(
+                  'This canvas is for everyone to create on, contribute to the artwork by adding your own cuboid!',
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 10),
+          Container(
+            height: cuboidPreviewSectionHeight,
+            color: Colors.black.withOpacity(0.2),
+          ),
           Container(
             color: Colors.black.withOpacity(0.2),
             padding: const EdgeInsets.symmetric(
@@ -60,7 +74,7 @@ class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
                 ),
                 Expanded(
                   child: Center(
-                    child: Text(faces[activePageIndex].title),
+                    child: Text(activeFace.title),
                   ),
                 ),
                 Directionality(
@@ -82,9 +96,10 @@ class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
               physics: const NeverScrollableScrollPhysics(),
               controller: pageController,
               padEnds: false,
-              onPageChanged: (value) => setState(() => activePageIndex = value),
+              onPageChanged: (value) =>
+                  setState(() => activeFace = CuboidFace.values[value]),
               children: List.generate(
-                faces.length,
+                CuboidFace.values.length,
                 (index) => SingleChildScrollView(
                   padding: const EdgeInsets.only(
                     top: 20,
@@ -93,17 +108,52 @@ class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
                   child: CuboidFaceForm(
                     colors: widget.settings.colors,
                     fillTypes: widget.settings.fillTypes,
-                    formData: faces[index].formData,
+                    formData: cuboidFormData[activeFace] ??
+                        const CuboidFaceFormData(),
                     onChanged: (newFormData) =>
-                        _updateFaceFormData(newFormData, index),
+                        ref.read(cuboidFormProvider.notifier).updateFaceFormData(
+                              CuboidFace.values[index],
+                              newFormData,
+                            ),
                   ),
                 ),
               ),
             ),
           ),
           Container(
-            height: cuboidPreviewSectionHeight,
             color: Colors.black.withOpacity(0.2),
+            padding: const EdgeInsets.symmetric(
+              horizontal: 10,
+              vertical: 10,
+            ),
+            child: Row(
+              children: [
+                TextButton.icon(
+                  onPressed: () => pageController.previousPage(
+                    duration: const Duration(milliseconds: 300),
+                    curve: Curves.easeInOut,
+                  ),
+                  label: const Text('Prev'),
+                  icon: const Icon(Icons.arrow_back_ios, size: 15),
+                ),
+                Expanded(
+                  child: Center(
+                    child: Text(activeFace.title),
+                  ),
+                ),
+                Directionality(
+                  textDirection: TextDirection.rtl,
+                  child: TextButton.icon(
+                    onPressed: () => pageController.nextPage(
+                      duration: const Duration(milliseconds: 300),
+                      curve: Curves.easeInOut,
+                    ),
+                    label: const Text('Next'),
+                    icon: const Icon(Icons.arrow_back_ios, size: 15),
+                  ),
+                ),
+              ],
+            ),
           ),
           InkWell(
             onTap: () {},
@@ -125,23 +175,6 @@ class _CuboidsCreatorBottomSheetState extends State<CuboidsCreatorBottomSheet> {
           ),
         ],
       ),
-    );
-  }
-}
-
-class CuboidFaceFormPage {
-  CuboidFaceFormPage({
-    required this.title,
-    this.formData = const CuboidFaceFormData(),
-  });
-
-  final String title;
-  final CuboidFaceFormData formData;
-
-  CuboidFaceFormPage copyWith({required CuboidFaceFormData formData}) {
-    return CuboidFaceFormPage(
-      title: title,
-      formData: formData,
     );
   }
 }

@@ -50,11 +50,6 @@ class _HomePageState extends ConsumerState<HomePage> {
       context: context,
       showDragHandle: true,
       isScrollControlled: true,
-      constraints: BoxConstraints(
-        maxWidth:
-            screenSize.width > 1200 ? screenSize.width * 0.6 : double.infinity,
-        maxHeight: screenSize.height * 0.8,
-      ),
       builder: (context) => CuboidsCreatorBottomSheet(
         settings: settings,
         authArtist: widget.authArtist!,

@@ -4,20 +4,22 @@ class ColorPicker extends StatelessWidget {
   const ColorPicker({
     super.key,
     this.colors = const [],
-    this.activeColorIndex,
-    this.onColorSelected,
+    this.selectedColor,
+    this.onChanged,
     this.padding,
   });
 
   final List<Color> colors;
-  final int? activeColorIndex;
-  final ValueChanged<Color>? onColorSelected;
+  final Color? selectedColor;
+  final ValueChanged<Color>? onChanged;
   final EdgeInsetsGeometry? padding;
 
   static const double height = 40;
 
   @override
   Widget build(BuildContext context) {
+    final activeColorIndex = colors.indexWhere((color) => color == selectedColor);
+
     return SizedBox(
       height: height,
       child: ListView(
@@ -31,7 +33,7 @@ class ColorPicker extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: InkWell(
-                  onTap: () => onColorSelected?.call(colors[index]),
+                  onTap: () => onChanged?.call(colors[index]),
                   child: Container(
                     height: height,
                     width: height,

@@ -8,14 +8,23 @@ class CuboidFace extends Equatable {
   const CuboidFace({
     required this.fillType,
     this.fillColor,
+    this.strokeColor,
+    this.strokeWidth = 1,
+    this.intensity = 1,
   });
 
   final CuboidFaceFillType fillType;
   final Color? fillColor;
+  final Color? strokeColor;
+  final double strokeWidth;
+  final int intensity;
 
   bool get isValid {
     if (fillType == CuboidFaceFillType.fill) {
       return fillColor != null;
+    }
+    if (fillType == CuboidFaceFillType.lines) {
+      return fillColor != null && strokeColor != null;
     }
     return false;
   }
@@ -27,20 +36,37 @@ class CuboidFace extends Equatable {
             (element) => element.name == (data['fillType']) as String,
           );
     final fillColorHex = data['fillColor'] as String?;
+    final strokeColorHex = data['strokeColor'] as String?;
 
     return CuboidFace(
       fillType: fillType ?? CuboidFaceFillType.fill,
       fillColor: AppColors.fromHex(fillColorHex),
+      strokeColor: AppColors.fromHex(strokeColorHex),
+      strokeWidth: (data['strokeWidth'] as num?)?.toDouble() ?? 1,
+      intensity: data['intensity'] as int? ?? 1,
     );
   }
 
-  factory CuboidFace.fromFormData(CuboidFaceFormData formData) {
+  factory CuboidFace.fromValidFormData(CuboidFaceFormData formData) {
     if (!formData.isValid) {
       throw Exception('Form data is invalid!');
     }
     return CuboidFace(
       fillType: formData.fillType!,
       fillColor: formData.fillColor,
+      strokeColor: formData.strokeColor,
+      strokeWidth: formData.strokeWidth,
+      intensity: formData.intensity,
+    );
+  }
+
+  factory CuboidFace.fromFormData(CuboidFaceFormData formData) {
+    return CuboidFace(
+      fillType: formData.fillType ?? CuboidFaceFillType.fill,
+      fillColor: formData.fillColor,
+      strokeColor: formData.strokeColor,
+      strokeWidth: formData.strokeWidth,
+      intensity: formData.intensity,
     );
   }
 
@@ -48,6 +74,9 @@ class CuboidFace extends Equatable {
     return {
       'fillType': fillType.name,
       'fillColor': fillColor?.toHex(),
+      'strokeColor': strokeColor?.toHex(),
+      'strokeWidth': strokeWidth,
+      'intensity': intensity,
     };
   }
 
@@ -59,12 +88,15 @@ class CuboidFace extends Equatable {
 }
 
 enum CuboidFaceFillType {
-  fill;
+  fill,
+  lines;
 
   String get label {
     switch (this) {
       case fill:
         return 'Solid Fill';
+      case lines:
+        return 'Lines';
     }
   }
 }

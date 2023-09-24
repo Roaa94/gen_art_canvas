@@ -17,7 +17,16 @@ class CuboidFaceFormData extends Equatable {
   const CuboidFaceFormData({
     this.fillType,
     this.fillColor,
+    this.strokeColor,
+    this.strokeWidth = 1,
+    this.intensity = 1,
   });
+
+  final CuboidFaceFillType? fillType;
+  final Color? fillColor;
+  final Color? strokeColor;
+  final double strokeWidth;
+  final int intensity;
 
   bool get isValid {
     if (fillType == null) {
@@ -26,7 +35,18 @@ class CuboidFaceFormData extends Equatable {
     if (fillType == CuboidFaceFillType.fill) {
       return fillColor != null;
     }
+    if (fillType == CuboidFaceFillType.lines) {
+      return fillColor != null && strokeColor != null;
+    }
     return false;
+  }
+
+  bool get hasStrokePickers {
+    return fillType == CuboidFaceFillType.lines;
+  }
+
+  bool get hasIntensitySlider {
+    return fillType == CuboidFaceFillType.lines;
   }
 
   bool get isEmpty => fillType == null && fillColor == null;
@@ -37,16 +57,19 @@ class CuboidFaceFormData extends Equatable {
 
   bool get formHasStrokeColorPicker => fillType == CuboidFaceFillType.fill;
 
-  final CuboidFaceFillType? fillType;
-  final Color? fillColor;
-
   CuboidFaceFormData copyWith({
     CuboidFaceFillType? fillType,
     Color? fillColor,
+    Color? strokeColor,
+    double? strokeWidth,
+    int? intensity,
   }) {
     return CuboidFaceFormData(
       fillColor: fillColor ?? this.fillColor,
       fillType: fillType ?? this.fillType,
+      strokeColor: strokeColor ?? this.strokeColor,
+      strokeWidth: strokeWidth ?? this.strokeWidth,
+      intensity: intensity ?? this.intensity,
     );
   }
 
@@ -54,5 +77,8 @@ class CuboidFaceFormData extends Equatable {
   List<Object?> get props => [
         fillType,
         fillColor,
+        strokeColor,
+        strokeWidth,
+        intensity,
       ];
 }

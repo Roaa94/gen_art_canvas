@@ -24,10 +24,10 @@ class CuboidsService {
     try {
       await _cuboidsRepository.addCuboid(
         artistId: artistId,
-        topFace: CuboidFace.fromFormData(formData[CuboidFaceDirection.top]!),
+        topFace: CuboidFace.fromValidFormData(formData[CuboidFaceDirection.top]!),
         rightFace:
-            CuboidFace.fromFormData(formData[CuboidFaceDirection.right]!),
-        leftFace: CuboidFace.fromFormData(formData[CuboidFaceDirection.left]!),
+            CuboidFace.fromValidFormData(formData[CuboidFaceDirection.right]!),
+        leftFace: CuboidFace.fromValidFormData(formData[CuboidFaceDirection.left]!),
       );
       final artist = await _artistsRepository.getArtist(artistId);
       if (artist != null) {

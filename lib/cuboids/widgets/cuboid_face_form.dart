@@ -51,6 +51,67 @@ class CuboidFaceForm extends StatelessWidget {
           onChanged: (Color color) =>
               onChanged?.call(formData.copyWith(fillColor: color)),
         ),
+        if (formData.hasStrokePickers)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              _buildSectionTitle(
+                context,
+                title: 'Stroke Color',
+                subtitle: 'Pick the stroke color of the lines',
+              ),
+              ColorPicker(
+                colors: colors,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                selectedColor: formData.strokeColor,
+                onChanged: (Color color) =>
+                    onChanged?.call(formData.copyWith(strokeColor: color)),
+              ),
+              const SizedBox(height: 10),
+              _buildSectionTitle(
+                context,
+                title: 'Stroke Width',
+                subtitle: 'Pick the stroke width of the lines',
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Slider(
+                  value: formData.strokeWidth,
+                  onChanged: (value) => onChanged?.call(
+                    formData.copyWith(strokeWidth: value),
+                  ),
+                  min: 1,
+                  max: 10,
+                  divisions: 9,
+                ),
+              ),
+            ],
+          ),
+        if (formData.hasIntensitySlider)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              _buildSectionTitle(
+                context,
+                title: 'Intensity',
+                subtitle: 'Adjust the intensity of the lines',
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Slider(
+                  value: formData.intensity.toDouble(),
+                  onChanged: (value) => onChanged?.call(
+                    formData.copyWith(intensity: value.toInt()),
+                  ),
+                  min: 1,
+                  max: 20,
+                  divisions: 19,
+                ),
+              ),
+            ],
+          )
       ],
     );
   }

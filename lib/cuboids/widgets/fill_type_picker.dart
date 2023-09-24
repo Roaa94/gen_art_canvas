@@ -33,20 +33,35 @@ class FillTypePicker extends StatelessWidget {
           (index) => Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              InkWell(
-                onTap: () => onChanged?.call(fillTypes[index]),
-                child: Container(
-                  height: height,
-                  width: height,
-                  decoration: BoxDecoration(
-                    color: AppColors.firebaseDarkGrey,
-                    borderRadius: BorderRadius.circular(3),
-                    border: Border.all(
-                      color: Colors.white.withOpacity(
-                        activeFillTypeIndex == index ? 1 : 0.4,
+              Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: InkWell(
+                  onTap: () => onChanged?.call(fillTypes[index]),
+                  child: Container(
+                    height: height,
+                    width: height,
+                    decoration: BoxDecoration(
+                      color: AppColors.firebaseDarkGrey,
+                      borderRadius: BorderRadius.circular(3),
+                      border: Border.all(
+                        color: Colors.white.withOpacity(
+                          activeFillTypeIndex == index ? 1 : 0.4,
+                        ),
+                        width: activeFillTypeIndex == index ? 3 : 1,
                       ),
-                      width: activeFillTypeIndex == index ? 3 : 1,
                     ),
+                    child: fillTypes[index] == CuboidFaceFillType.lines
+                        ? Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: List.generate(
+                              10,
+                              (index) => Container(
+                                width: 2,
+                                color: Colors.white,
+                              ),
+                            ),
+                          )
+                        : null,
                   ),
                 ),
               ),

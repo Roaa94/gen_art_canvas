@@ -1,7 +1,9 @@
 import 'dart:math';
+import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid.dart';
+import 'package:gen_art_canvas/cuboids/utils.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
 class CuboidsGenArtCanvas extends StatefulWidget {
@@ -145,8 +147,6 @@ class GenArtCanvasPainter extends CustomPainter {
   final List<double> randomYOffsets;
   final List<Cuboid> cuboidsData;
 
-  final skewedScaleX = 0.5 * sqrt(2);
-
   @override
   void paint(Canvas canvas, Size size) {
     final gap = initialGap;
@@ -171,50 +171,17 @@ class GenArtCanvasPainter extends CustomPainter {
       canvas.save();
       // Move the canvas to offset of next cuboid
       canvas.translate(animatedYOffset.dx, animatedYOffset.dy);
-      _paintCuboid(canvas, size, diagonal, cuboidData);
+      CuboidsUtils.paintCuboid(
+        canvas,
+        size: size,
+        diagonal: diagonal,
+        leftFace: cuboidData?.leftFace,
+        rightFace: cuboidData?.rightFace,
+        topFace: cuboidData?.topFace,
+        settings: settings,
+      );
       canvas.restore();
     }
-  }
-
-  _paintCuboid(Canvas canvas, Size size, double diagonal, Cuboid? data) {
-    final side = diagonal / sqrt(2);
-    final topFacePath = Path()..addRect(Rect.fromLTWH(0, 0, side, side));
-    final topFaceFillColor =
-        data?.topFace.fillColor ?? settings.defaultPrimaryColor.shade600;
-    final topFacePaint = Paint()..color = topFaceFillColor;
-    // Paint top face
-    canvas.save();
-    canvas.translate(diagonal / 2, 0.0);
-    canvas.scale(1.0, yScale);
-    canvas.rotate(45 * pi / 180);
-    canvas.drawPath(topFacePath, topFacePaint);
-    canvas.restore();
-
-    // Paint left face
-    final leftFacePath = Path()
-      ..addRect(Rect.fromLTWH(0, 0, side, size.height));
-    final leftFaceFillColor =
-        data?.leftFace.fillColor ?? settings.defaultPrimaryColor.shade900;
-    final leftFacePaint = Paint()..color = leftFaceFillColor;
-    canvas.save();
-    canvas.translate(0, diagonal / 2 * yScale);
-    canvas.skew(0.0, yScale);
-    canvas.scale(skewedScaleX, 1.0);
-    canvas.drawPath(leftFacePath, leftFacePaint);
-    canvas.restore();
-
-    // Paint right face
-    final rightFacePath = Path()
-      ..addRect(Rect.fromLTWH(0, 0, side, size.height));
-    final rightFaceFillColor =
-        data?.rightFace.fillColor ?? settings.defaultPrimaryColor.shade800;
-    final rightFacePaint = Paint()..color = rightFaceFillColor;
-    canvas.save();
-    canvas.translate(diagonal / 2, diagonal * yScale);
-    canvas.skew(0.0, -yScale);
-    canvas.scale(skewedScaleX, 1.0);
-    canvas.drawPath(rightFacePath, rightFacePaint);
-    canvas.restore();
   }
 
   @override

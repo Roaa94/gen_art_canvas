@@ -6,6 +6,7 @@ import 'package:gen_art_canvas/cuboids/application/cuboid_form_data.dart';
 import 'package:gen_art_canvas/cuboids/application/cuboid_form_provider.dart';
 import 'package:gen_art_canvas/cuboids/application/cuboids_service.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboid_face_form.dart';
+import 'package:gen_art_canvas/cuboids/widgets/form_preview_cuboid.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
 final activeFaceIndexProvider = StateProvider<int>((ref) => 0);
@@ -29,7 +30,6 @@ class CuboidsCreatorBottomSheet extends ConsumerStatefulWidget {
 class _CuboidsCreatorBottomSheetState
     extends ConsumerState<CuboidsCreatorBottomSheet> {
   late final PageController pageController;
-  static const double cuboidPreviewSectionHeight = 220;
 
   void _resetProgress() {
     ref.read(activeFaceIndexProvider.notifier).state = 0;
@@ -62,6 +62,7 @@ class _CuboidsCreatorBottomSheetState
 
   @override
   Widget build(BuildContext context) {
+    final cuboidPreviewSectionHeight = MediaQuery.of(context).size.height * 0.4;
     final activeFaceIndex = ref.watch(activeFaceIndexProvider);
     final activeFace = CuboidFaceDirection.values[activeFaceIndex];
     final cuboidFormData = ref.watch(cuboidFormProvider);
@@ -143,6 +144,7 @@ class _CuboidsCreatorBottomSheetState
                 _buildFormPageView(
                   context,
                   cuboidFormData: cuboidFormData,
+                  previewHeight: cuboidPreviewSectionHeight,
                 ),
                 Positioned(
                   bottom: 0,
@@ -151,6 +153,10 @@ class _CuboidsCreatorBottomSheetState
                   child: Container(
                     height: cuboidPreviewSectionHeight,
                     color: Colors.black.withOpacity(0.3),
+                    child: FormPreviewCuboid(
+                      formData: cuboidFormData,
+                      settings: widget.settings,
+                    ),
                   ),
                 ),
                 if (!isCuboidFormEmpty)
@@ -237,6 +243,7 @@ class _CuboidsCreatorBottomSheetState
   Widget _buildFormPageView(
     BuildContext context, {
     required CuboidFormData cuboidFormData,
+    required double previewHeight,
   }) {
     return PageView(
       physics: const NeverScrollableScrollPhysics(),
@@ -247,9 +254,7 @@ class _CuboidsCreatorBottomSheetState
       children: List.generate(
         CuboidFaceDirection.values.length,
         (index) => SingleChildScrollView(
-          padding: const EdgeInsets.only(
-            bottom: cuboidPreviewSectionHeight + 20,
-          ),
+          padding: EdgeInsets.only(bottom: previewHeight + 20.0),
           child: CuboidFaceForm(
             colors: widget.settings.colors,
             face: CuboidFaceDirection.values[index],

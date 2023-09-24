@@ -87,7 +87,7 @@ class _CuboidsCreatorBottomSheetState
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Text(
-                  'This canvas is for everyone to create on, contribute to the artwork by adding your own cuboid!',
+                  'Contribute to the artwork by adding your own cuboid!',
                   textAlign: TextAlign.center,
                 ),
               ],

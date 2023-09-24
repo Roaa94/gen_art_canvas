@@ -68,7 +68,7 @@ class CuboidFaceForm extends StatelessWidget {
                 subtitle: 'Pick the stroke color of the lines',
               ),
               ColorPicker(
-                colors: colors,
+                colors: pickerColors,
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 selectedColor: formData.strokeColor,
                 onChanged: (Color color) =>

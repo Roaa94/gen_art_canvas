@@ -1,5 +1,4 @@
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid.dart';
@@ -100,24 +99,22 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
 
   @override
   Widget build(BuildContext context) {
-    const ratio = 1080 / 1920;
+    Size screenSize = MediaQuery.of(context).size;
 
     return ColoredBox(
       color: widget.bgColor ?? widget.settings.defaultPrimaryColor,
-      child: Align(
-        alignment: Alignment.bottomCenter,
-        child: FittedBox(
-          child: SizedBox(
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * ratio,
-            child: CustomPaint(
-              painter: GenArtCanvasPainter(
-                randomYOffsets: randomYOffsets,
-                settings: widget.settings,
-                initialGap: widget.initialGap,
-                animationController: animationController,
-                cuboidsData: widget.cuboidsData,
-              ),
+      child: SizedBox(
+        width: screenSize.width,
+        height: screenSize.height,
+        child: Padding(
+          padding: EdgeInsets.only(top: widget.settings.maxRandomYOffset),
+          child: CustomPaint(
+            painter: GenArtCanvasPainter(
+              randomYOffsets: randomYOffsets,
+              settings: widget.settings,
+              initialGap: widget.initialGap,
+              animationController: animationController,
+              cuboidsData: widget.cuboidsData,
             ),
           ),
         ),

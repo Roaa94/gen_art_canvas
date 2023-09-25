@@ -13,12 +13,16 @@ class CuboidsGenArtCanvas extends StatefulWidget {
     this.direction = Axis.vertical,
     required this.settings,
     this.cuboidsData = const [],
+    this.animationEnabled = true,
+    this.bgColor,
   });
 
   final Axis direction;
   final double initialGap;
   final CuboidsCanvasSettings settings;
   final List<Cuboid> cuboidsData;
+  final bool animationEnabled;
+  final Color? bgColor;
 
   @override
   State<CuboidsGenArtCanvas> createState() => _CuboidsGenArtCanvasState();
@@ -61,7 +65,9 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
       vsync: this,
       duration: animationDuration,
     );
-    animationController.repeat(reverse: true);
+    if (widget.animationEnabled) {
+      animationController.repeat(reverse: true);
+    }
     animationController.addListener(_animationControllerListener);
     randomYOffsets = _generateRandomYOffsets();
   }
@@ -73,6 +79,15 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
       setState(() {
         randomYOffsets = _generateRandomYOffsets();
       });
+    }
+    if (oldWidget.animationEnabled != widget.animationEnabled) {
+      if (!widget.animationEnabled) {
+        // stop running animation
+        animationController.stop();
+      } else {
+        // Start the animation
+        animationController.repeat(reverse: true);
+      }
     }
   }
 
@@ -88,7 +103,7 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
     const ratio = 1080 / 1920;
 
     return ColoredBox(
-      color: widget.settings.defaultPrimaryColor,
+      color: widget.bgColor ?? widget.settings.defaultPrimaryColor,
       child: Align(
         alignment: Alignment.bottomCenter,
         child: FittedBox(

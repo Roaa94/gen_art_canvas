@@ -13,13 +13,6 @@ class AuthService {
   final AuthRepository _authRepository;
   final ArtistsRepository _artistsRepository;
 
-  Stream<Artist?> watchAuthArtist() {
-    return _authRepository.watchUser().asyncMap((user) async {
-      if (user == null) return null;
-      return await _artistsRepository.getArtist(user.uid);
-    });
-  }
-
   Future<Artist?> signArtistInAnonymously({
     required String nickname,
   }) async {

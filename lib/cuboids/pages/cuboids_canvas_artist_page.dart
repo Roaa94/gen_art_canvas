@@ -29,11 +29,21 @@ class CuboidsCanvasArtistPage extends ConsumerWidget {
       body: isAuthLoading
           ? const Center(child: CircularProgressIndicator())
           : authArtist == null
-              ? ArtistNicknameDialog(
-                  onSubmit: (String nickname) => ref
-                      .read(authServiceProvider)
-                      .signArtistInAnonymously(nickname: nickname),
-                  isLoading: isAuthLoading,
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      'GenArtCanvas',
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                    const SizedBox(height: 20),
+                    ArtistNicknameDialog(
+                      onSubmit: (String nickname) => ref
+                          .read(authServiceProvider)
+                          .signArtistInAnonymously(nickname: nickname),
+                      isLoading: isAuthLoading,
+                    ),
+                  ],
                 )
               : ref.watch(cuboidsCanvasSettingsProvider).when(
                     data: (CuboidsCanvasSettings settings) => Column(

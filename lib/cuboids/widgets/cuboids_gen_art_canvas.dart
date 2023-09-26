@@ -11,7 +11,7 @@ class CuboidsGenArtCanvas extends StatefulWidget {
     this.initialGap = 40,
     this.direction = Axis.vertical,
     required this.settings,
-    this.cuboidsData = const [],
+    this.cuboids = const [],
     this.animationEnabled = true,
     this.bgColor,
   });
@@ -19,7 +19,7 @@ class CuboidsGenArtCanvas extends StatefulWidget {
   final Axis direction;
   final double initialGap;
   final CuboidsCanvasSettings settings;
-  final List<Cuboid> cuboidsData;
+  final List<Cuboid> cuboids;
   final bool animationEnabled;
   final Color? bgColor;
 
@@ -114,7 +114,7 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
               settings: widget.settings,
               initialGap: widget.initialGap,
               animationController: animationController,
-              cuboidsData: widget.cuboidsData,
+              cuboids: widget.cuboids,
             ),
           ),
         ),
@@ -130,7 +130,7 @@ class GenArtCanvasPainter extends CustomPainter {
     this.yScale = 0.5,
     required this.randomYOffsets,
     required AnimationController animationController,
-    this.cuboidsData = const [],
+    this.cuboids = const [],
   })  : assert(randomYOffsets.length == settings.cuboidsTotalCount),
         animation = CurvedAnimation(
           parent: animationController,
@@ -157,7 +157,7 @@ class GenArtCanvasPainter extends CustomPainter {
   final double yScale;
   late final Animation<double> animation;
   final List<double> randomYOffsets;
-  final List<Cuboid> cuboidsData;
+  final List<Cuboid> cuboids;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -169,8 +169,7 @@ class GenArtCanvasPainter extends CustomPainter {
       int j = index ~/ cuboidsCrossAxisCount;
       int i = index % cuboidsCrossAxisCount;
 
-      final cuboidData =
-          cuboidsData.length - 1 >= index ? cuboidsData[index] : null;
+      final cuboidData = cuboids.length - 1 >= index ? cuboids[index] : null;
       final xOffset =
           (diagonal * i) + (j.isOdd ? diagonal / 2 + gap / 2 : 0) + gap * i;
       final yOffset = (diagonal * yScale * 0.5) * j + gap * yScale * j;

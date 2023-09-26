@@ -65,7 +65,7 @@ class _HomePageState extends ConsumerState<CuboidsCanvasHomePage> {
                 CuboidsGenArtCanvas(
                   settings: settings,
                   initialGap: MediaQuery.of(context).size.width * 0.02,
-                  cuboidsData: cuboids?.reversed.toList() ?? [],
+                  cuboids: cuboids?.reversed.toList() ?? [],
                 ),
                 if (authArtist != null)
                   Positioned(

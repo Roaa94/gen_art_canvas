@@ -10,7 +10,7 @@ import 'package:gen_art_canvas/core/style/app_colors.dart';
 import 'package:gen_art_canvas/cuboids/application/cuboids_service.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboids_creator_bottom_sheet.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
-import 'package:gen_art_canvas/cuboids/widgets/cuboids_gen_art_canvas.dart';
+import 'package:gen_art_canvas/cuboids/widgets/cuboids_canvas.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings_provider.dart';
 
 class CuboidsCanvasHomePage extends ConsumerStatefulWidget {
@@ -62,7 +62,7 @@ class _HomePageState extends ConsumerState<CuboidsCanvasHomePage> {
       body: ref.watch(cuboidsCanvasSettingsProvider).when(
             data: (CuboidsCanvasSettings settings) => Stack(
               children: [
-                CuboidsGenArtCanvas(
+                CuboidsCanvas(
                   settings: settings,
                   initialGap: MediaQuery.of(context).size.width * 0.02,
                   cuboids: cuboids?.reversed.toList() ?? [],

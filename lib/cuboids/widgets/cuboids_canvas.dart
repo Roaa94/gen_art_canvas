@@ -5,8 +5,8 @@ import 'package:gen_art_canvas/cuboids/domain/cuboid.dart';
 import 'package:gen_art_canvas/cuboids/utils.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
-class CuboidsGenArtCanvas extends StatefulWidget {
-  const CuboidsGenArtCanvas({
+class CuboidsCanvas extends StatefulWidget {
+  const CuboidsCanvas({
     super.key,
     this.initialGap = 40,
     this.direction = Axis.vertical,
@@ -24,10 +24,10 @@ class CuboidsGenArtCanvas extends StatefulWidget {
   final Color? bgColor;
 
   @override
-  State<CuboidsGenArtCanvas> createState() => _CuboidsGenArtCanvasState();
+  State<CuboidsCanvas> createState() => _CuboidsCanvasState();
 }
 
-class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
+class _CuboidsCanvasState extends State<CuboidsCanvas>
     with SingleTickerProviderStateMixin {
   late final AnimationController animationController;
   static final random = Random();
@@ -72,7 +72,7 @@ class _CuboidsGenArtCanvasState extends State<CuboidsGenArtCanvas>
   }
 
   @override
-  void didUpdateWidget(covariant CuboidsGenArtCanvas oldWidget) {
+  void didUpdateWidget(covariant CuboidsCanvas oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.settings != widget.settings) {
       setState(() {

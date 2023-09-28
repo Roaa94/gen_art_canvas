@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
-import 'package:gen_art_canvas/cuboids/widgets/cuboids_gen_art_canvas.dart';
+import 'package:gen_art_canvas/cuboids/widgets/cuboids_canvas.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 import 'package:widgetbook/widgetbook.dart';
 
@@ -24,7 +24,7 @@ class WidgetbookApp extends StatelessWidget {
               useCases: [
                 WidgetbookUseCase(
                   name: 'Playground',
-                  builder: (context) => CuboidsGenArtCanvas(
+                  builder: (context) => CuboidsCanvas(
                     animationEnabled: context.knobs.boolean(
                       label: 'Enable Animation',
                       initialValue: true,

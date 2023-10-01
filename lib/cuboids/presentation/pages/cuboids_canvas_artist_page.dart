@@ -6,7 +6,7 @@ import 'package:gen_art_canvas/auth/application/auth_service.dart';
 import 'package:gen_art_canvas/auth/domain/artist.dart';
 import 'package:gen_art_canvas/auth/widgets/artist_nickname_dialog.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
-import 'package:gen_art_canvas/cuboids/widgets/cuboids_creator_bottom_sheet.dart';
+import 'package:gen_art_canvas/cuboids/presentation/widgets/cuboids_creator_bottom_sheet.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings_provider.dart';
 

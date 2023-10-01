@@ -2,10 +2,10 @@ import 'dart:developer';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/auth/data/artists_repository.dart';
-import 'package:gen_art_canvas/cuboids/application/cuboid_form_data.dart';
 import 'package:gen_art_canvas/cuboids/data/cuboids_repository.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
+import 'package:gen_art_canvas/cuboids/presentation/cuboid_form_data.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings_provider.dart';
 
 class CuboidsService {

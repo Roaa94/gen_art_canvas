@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gen_art_canvas/cuboids/application/cuboid_form_data.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
+import 'package:gen_art_canvas/cuboids/presentation/cuboid_form_data.dart';
 import 'package:gen_art_canvas/cuboids/utils.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 

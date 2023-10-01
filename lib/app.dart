@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/core/style/app_themes.dart';
-import 'package:gen_art_canvas/cuboids/pages/cuboids_canvas_artist_page.dart';
-import 'package:gen_art_canvas/cuboids/pages/cuboids_canvas_home_page.dart';
+import 'package:gen_art_canvas/cuboids/presentation/pages/cuboids_canvas_artist_page.dart';
+import 'package:gen_art_canvas/cuboids/presentation/pages/cuboids_canvas_home_page.dart';
 
 class GenArtCanvasApp extends ConsumerWidget {
   const GenArtCanvasApp({super.key});

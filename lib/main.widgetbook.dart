@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
-import 'package:gen_art_canvas/cuboids/widgets/cuboids_canvas.dart';
+import 'package:gen_art_canvas/cuboids/presentation/widgets/cuboids_canvas.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 // ignore: depend_on_referenced_packages
 import 'package:widgetbook/widgetbook.dart';

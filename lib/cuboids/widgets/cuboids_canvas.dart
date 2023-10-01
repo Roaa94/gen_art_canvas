@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:gen_art_canvas/core/style/app_colors.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid.dart';
 import 'package:gen_art_canvas/cuboids/utils.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
@@ -103,7 +104,10 @@ class _CuboidsCanvasState extends State<CuboidsCanvas>
     final screenSize = MediaQuery.of(context).size;
 
     return ColoredBox(
-      color: widget.bgColor ?? widget.settings.defaultPrimaryColor,
+      color: widget.bgColor ??
+          (widget.cuboids.isNotEmpty
+              ? AppColors.firebaseNavy.toMaterial().shade600
+              : widget.settings.defaultPrimaryColor),
       child: SizedBox(
         width: screenSize.width,
         height: screenSize.height,

@@ -20,7 +20,7 @@ https://github.com/Roaa94/gen_art_canvas/assets/50345358/36805800-a3cd-45e4-8382
 🔗 [Through this demo link, you can view the canvas if you are on a devide with a big screen, or you can view the the cuboid creation UI if you visit on a small screen](https://genart-canvas.roaakdm.com/)
 
 ## App Architecture & Folder Structure
-The app architecture & folder structure is heavily inspired by [Andrea Bizzotto](https://twitter.com/biz84)'s [Starter Architecture With Flutter and Firebase repository](https://github.com/bizz84/starter_architecture_flutter_firebase)
+With **Flutter** for the painting (of course!), **Riverpod** for dependency injection & state management, and **Firebase** for backend, the app architecture & folder structure is heavily inspired by [Andrea Bizzotto](https://twitter.com/biz84)'s [Starter Architecture With Flutter and Firebase repository](https://github.com/bizz84/starter_architecture_flutter_firebase)
 
 ### Firebase Anonymous Authentication
 

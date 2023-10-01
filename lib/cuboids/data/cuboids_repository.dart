@@ -42,9 +42,7 @@ class CuboidsRepository implements FirestoreRepository<Cuboid> {
     return collection
         .where(
           'createdAt',
-          isGreaterThan: Timestamp.fromDate(
-            DateTime.now().subtract(const Duration(hours: 1)),
-          ),
+          isGreaterThan: Timestamp.fromDate(DateTime(2023, 9, 26)),
         )
         .orderBy('createdAt', descending: true)
         .limit(limit)

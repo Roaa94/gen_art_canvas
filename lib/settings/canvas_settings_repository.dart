@@ -1,9 +1,9 @@
-import 'package:gen_art_canvas/core/data/firestore_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:gen_art_canvas/core/data/firestore_repository.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
-class CanvasSettingsRepository implements FirestoreRepository {
+class CanvasSettingsRepository implements FirestoreRepository<dynamic> {
   CanvasSettingsRepository(this._firestore);
 
   final FirebaseFirestore _firestore;

@@ -13,24 +13,8 @@ class CuboidFace extends Equatable {
     this.intensity = 1,
   });
 
-  final CuboidFaceFillType fillType;
-  final Color? fillColor;
-  final Color? strokeColor;
-  final double strokeWidth;
-  final int intensity;
-
-  bool get isValid {
-    if (fillType == CuboidFaceFillType.fill) {
-      return fillColor != null;
-    }
-    if (fillType == CuboidFaceFillType.lines) {
-      return fillColor != null && strokeColor != null;
-    }
-    return false;
-  }
-
   factory CuboidFace.fromMap(Map<String, dynamic> data) {
-    final CuboidFaceFillType? fillType = data['fillType'] == null
+    final fillType = data['fillType'] == null
         ? CuboidFaceFillType.fill
         : CuboidFaceFillType.values.firstWhereOrNull(
             (element) => element.name == (data['fillType']) as String,
@@ -52,7 +36,7 @@ class CuboidFace extends Equatable {
       throw Exception('Form data is invalid!');
     }
     return CuboidFace(
-      fillType: formData.fillType!,
+      fillType: formData.fillType,
       fillColor: formData.fillColor,
       strokeColor: formData.strokeColor,
       strokeWidth: formData.strokeWidth,
@@ -62,12 +46,28 @@ class CuboidFace extends Equatable {
 
   factory CuboidFace.fromFormData(CuboidFaceFormData formData) {
     return CuboidFace(
-      fillType: formData.fillType ?? CuboidFaceFillType.fill,
+      fillType: formData.fillType,
       fillColor: formData.fillColor,
       strokeColor: formData.strokeColor,
       strokeWidth: formData.strokeWidth,
       intensity: formData.intensity,
     );
+  }
+
+  final CuboidFaceFillType fillType;
+  final Color? fillColor;
+  final Color? strokeColor;
+  final double strokeWidth;
+  final int intensity;
+
+  bool get isValid {
+    if (fillType == CuboidFaceFillType.fill) {
+      return fillColor != null;
+    }
+    if (fillType == CuboidFaceFillType.lines) {
+      return fillColor != null && strokeColor != null;
+    }
+    return false;
   }
 
   Map<String, dynamic> toMap() {

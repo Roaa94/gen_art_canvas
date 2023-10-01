@@ -10,12 +10,6 @@ class Artist extends Equatable {
     this.createdCuboidsCount = 0,
   });
 
-  final String id;
-  final String nickname;
-  final DateTime joinedAt;
-  final DateTime? signedUpAt;
-  final int createdCuboidsCount;
-
   factory Artist.fromMap(Map<String, dynamic> data, String id) {
     final joinedAtTimestamp = data['joinedAt'] as Timestamp;
     final signedUpAtTimestamp = data['signedUpAt'] as Timestamp?;
@@ -30,6 +24,12 @@ class Artist extends Equatable {
       createdCuboidsCount: createdCuboidsCount ?? 0,
     );
   }
+
+  final String id;
+  final String nickname;
+  final DateTime joinedAt;
+  final DateTime? signedUpAt;
+  final int createdCuboidsCount;
 
   Map<String, dynamic> toMap() => {
         'nickname': nickname,

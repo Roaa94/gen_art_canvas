@@ -28,25 +28,26 @@ class AppColors {
 
 extension ColorExtension on Color {
   Color getShade({bool darker = false, double value = .1}) {
-    assert(value >= 0 && value <= 1);
+    assert(value >= 0 && value <= 1, 'Value should be between 0 and 1');
 
     final hsl = HSLColor.fromColor(this);
     final hslDark = hsl.withLightness(
-        (darker ? (hsl.lightness - value) : (hsl.lightness + value))
-            .clamp(0.0, 1.0));
+      (darker ? (hsl.lightness - value) : (hsl.lightness + value))
+          .clamp(0.0, 1.0),
+    );
 
     return hslDark.toColor();
   }
 
   MaterialColor toMaterial() {
-    Map<int, Color> colorShades = {
+    final colorShades = <int, Color>{
       50: getShade(value: 0.5),
       100: getShade(value: 0.4),
       200: getShade(value: 0.3),
       300: getShade(value: 0.2),
-      400: getShade(value: 0.1),
+      400: getShade(),
       500: this, //Primary value
-      600: getShade(value: 0.1, darker: true),
+      600: getShade(darker: true),
       700: getShade(value: 0.15, darker: true),
       800: getShade(value: 0.2, darker: true),
       900: getShade(value: 0.25, darker: true),
@@ -55,7 +56,7 @@ extension ColorExtension on Color {
   }
 
   String toHex({bool leadingHashSign = false, bool withAlpha = false}) {
-    String hex = '';
+    var hex = '';
     if (leadingHashSign) hex += '#';
     if (withAlpha) hex += alpha.toRadixString(16).padLeft(2, '0');
     hex += red.toRadixString(16).padLeft(2, '0');

@@ -21,9 +21,10 @@ class CuboidsUtils {
         ..color = cuboidFace.strokeColor!;
       final linesPoints = <Offset>[];
       final step = size.width / cuboidFace.intensity;
-      for (int i = 0; i <= cuboidFace.intensity; i++) {
-        linesPoints.add(Offset(i * step, 2));
-        linesPoints.add(Offset(i * step, size.height - 2));
+      for (var i = 0; i <= cuboidFace.intensity; i++) {
+        linesPoints
+          ..add(Offset(i * step, 2))
+          ..add(Offset(i * step, size.height - 2));
       }
       canvas.drawPoints(
         PointMode.lines,
@@ -49,11 +50,12 @@ class CuboidsUtils {
     final topFacePaint = Paint()..color = topFaceFillColor;
 
     // Paint top face
-    canvas.save();
-    canvas.translate(diagonal / 2, 0.0);
-    canvas.scale(1.0, yScale);
-    canvas.rotate(45 * pi / 180);
-    canvas.drawPath(topFacePath, topFacePaint);
+    canvas
+      ..save()
+      ..translate(diagonal / 2, 0)
+      ..scale(1, yScale)
+      ..rotate(45 * pi / 180)
+      ..drawPath(topFacePath, topFacePaint);
     if (topFace != null && topFace.fillType == CuboidFaceFillType.lines) {
       paintLines(
         canvas,
@@ -70,11 +72,12 @@ class CuboidsUtils {
     final leftFaceFillColor =
         leftFace?.fillColor ?? settings.defaultPrimaryColor.shade900;
     final leftFacePaint = Paint()..color = leftFaceFillColor;
-    canvas.save();
-    canvas.translate(0, diagonal / 2 * yScale);
-    canvas.skew(0.0, yScale);
-    canvas.scale(skewedScaleX, 1.0);
-    canvas.drawPath(leftFacePath, leftFacePaint);
+    canvas
+      ..save()
+      ..translate(0, diagonal / 2 * yScale)
+      ..skew(0, yScale)
+      ..scale(skewedScaleX, 1)
+      ..drawPath(leftFacePath, leftFacePaint);
     if (leftFace != null && leftFace.fillType == CuboidFaceFillType.lines) {
       paintLines(
         canvas,
@@ -91,11 +94,12 @@ class CuboidsUtils {
     final rightFaceFillColor =
         rightFace?.fillColor ?? settings.defaultPrimaryColor.shade800;
     final rightFacePaint = Paint()..color = rightFaceFillColor;
-    canvas.save();
-    canvas.translate(diagonal / 2, diagonal * yScale);
-    canvas.skew(0.0, -yScale);
-    canvas.scale(skewedScaleX, 1.0);
-    canvas.drawPath(rightFacePath, rightFacePaint);
+    canvas
+      ..save()
+      ..translate(diagonal / 2, diagonal * yScale)
+      ..skew(0, -yScale)
+      ..scale(skewedScaleX, 1)
+      ..drawPath(rightFacePath, rightFacePaint);
     if (rightFace != null && rightFace.fillType == CuboidFaceFillType.lines) {
       paintLines(
         canvas,

@@ -2,7 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/cuboids/application/cuboid_form_data.dart';
 
 final cuboidFormProvider = NotifierProvider<CuboidFormNotifier, CuboidFormData>(
-  () => CuboidFormNotifier(),
+  CuboidFormNotifier.new,
 );
 
 class CuboidFormNotifier extends Notifier<CuboidFormData> {
@@ -16,28 +16,31 @@ class CuboidFormNotifier extends Notifier<CuboidFormData> {
           face: const CuboidFaceFormData(),
       };
 
-  updateFaceFormData(CuboidFaceDirection face, CuboidFaceFormData formData) {
+  void updateFaceFormData(
+    CuboidFaceDirection face,
+    CuboidFaceFormData formData,
+  ) {
     state = {
       ...state,
       face: formData,
     };
   }
 
-  getIfEmpty() {
+  bool getIfEmpty() {
     return CuboidFaceDirection.values.every((direction) {
       return state[direction] == null || state[direction]!.isEmpty;
     });
   }
 
-  getIfFaceFormIsValid(CuboidFaceDirection face) {
+  bool getIfFaceFormIsValid(CuboidFaceDirection face) {
     return state[face] != null && state[face]!.isValid;
   }
 
-  reset() {
+  void reset() {
     state = _buildEmpty();
   }
 
-  getIfCuboidFormIsValid() {
+  bool getIfCuboidFormIsValid() {
     return CuboidFaceDirection.values.every((direction) {
       return state[direction] != null && state[direction]!.isValid;
     });

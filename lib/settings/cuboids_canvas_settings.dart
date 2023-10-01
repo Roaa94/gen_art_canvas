@@ -22,15 +22,9 @@ class CuboidsCanvasSettings extends Equatable {
     this.fillTypes = const [],
   });
 
-  final int cuboidsTotalCount;
-  final double maxRandomYOffset;
-  final MaterialColor defaultPrimaryColor;
-  final List<Color> colors;
-  final List<CuboidFaceFillType> fillTypes;
-
   factory CuboidsCanvasSettings.fromMap(Map<String, dynamic> data) {
     final cuboidsTotalCount = data['cuboidsTotalCount'] as int;
-    final maxRandomYOffset = data['maxRandomYOffset'].toDouble();
+    final maxRandomYOffset = (data['maxRandomYOffset'] as num).toDouble();
     final defaultPrimaryColorHex = data['defaultPrimaryColorHex'] as String?;
     final colorHexValues = data['colors'] as List? ?? [];
     final parsedColors = <Color>[];
@@ -60,6 +54,12 @@ class CuboidsCanvasSettings extends Equatable {
       fillTypes: parsedFillTypes,
     );
   }
+
+  final int cuboidsTotalCount;
+  final double maxRandomYOffset;
+  final MaterialColor defaultPrimaryColor;
+  final List<Color> colors;
+  final List<CuboidFaceFillType> fillTypes;
 
   Map<String, dynamic> toMap() {
     return {

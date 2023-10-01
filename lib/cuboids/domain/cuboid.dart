@@ -12,6 +12,17 @@ class Cuboid extends Equatable {
     required this.leftFace,
   });
 
+  factory Cuboid.fromMap(Map<String, dynamic> data, String id) {
+    return Cuboid(
+      id: id,
+      artistId: data['artistId'] as String,
+      createdAt: (data['createdAt'] as Timestamp).toDate(),
+      topFace: CuboidFace.fromMap(data['topFace'] as Map<String, dynamic>),
+      rightFace: CuboidFace.fromMap(data['rightFace'] as Map<String, dynamic>),
+      leftFace: CuboidFace.fromMap(data['leftFace'] as Map<String, dynamic>),
+    );
+  }
+
   final String id;
   final String artistId;
   final DateTime createdAt;
@@ -20,17 +31,6 @@ class Cuboid extends Equatable {
   final CuboidFace leftFace;
 
   bool get isValid => topFace.isValid && rightFace.isValid && leftFace.isValid;
-
-  factory Cuboid.fromMap(Map<String, dynamic> data, String id) {
-    return Cuboid(
-      id: id,
-      artistId: data['artistId'],
-      createdAt: (data['createdAt'] as Timestamp).toDate(),
-      topFace: CuboidFace.fromMap(data['topFace']),
-      rightFace: CuboidFace.fromMap(data['rightFace']),
-      leftFace: CuboidFace.fromMap(data['leftFace']),
-    );
-  }
 
   Map<String, dynamic> toMap() {
     return {

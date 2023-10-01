@@ -18,7 +18,8 @@ class ColorPicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final activeColorIndex = colors.indexWhere((color) => color == selectedColor);
+    final activeColorIndex =
+        colors.indexWhere((color) => color == selectedColor);
 
     return SizedBox(
       height: height,

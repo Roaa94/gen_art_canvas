@@ -6,9 +6,9 @@ import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
 class FormPreviewCuboid extends StatelessWidget {
   const FormPreviewCuboid({
-    super.key,
     required this.formData,
     required this.settings,
+    super.key,
   });
 
   final CuboidFormData formData;

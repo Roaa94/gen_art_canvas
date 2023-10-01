@@ -4,7 +4,7 @@ import 'package:gen_art_canvas/core/data/firestore_repository.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid.dart';
 import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
 
-class CuboidsRepository implements FirestoreRepository {
+class CuboidsRepository implements FirestoreRepository<Cuboid> {
   CuboidsRepository(this._firestore);
 
   final FirebaseFirestore _firestore;

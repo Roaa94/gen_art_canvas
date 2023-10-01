@@ -2,15 +2,15 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gen_art_canvas/auth/domain/artist.dart';
 import 'package:gen_art_canvas/auth/application/auth_service.dart';
+import 'package:gen_art_canvas/auth/domain/artist.dart';
 import 'package:gen_art_canvas/auth/widgets/artist_home_info.dart';
 import 'package:gen_art_canvas/auth/widgets/artist_nickname_dialog.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
 import 'package:gen_art_canvas/cuboids/application/cuboids_service.dart';
+import 'package:gen_art_canvas/cuboids/widgets/cuboids_canvas.dart';
 import 'package:gen_art_canvas/cuboids/widgets/cuboids_creator_bottom_sheet.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
-import 'package:gen_art_canvas/cuboids/widgets/cuboids_canvas.dart';
 import 'package:gen_art_canvas/settings/cuboids_canvas_settings_provider.dart';
 
 class CuboidsCanvasHomePage extends ConsumerStatefulWidget {
@@ -22,7 +22,7 @@ class CuboidsCanvasHomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<CuboidsCanvasHomePage> {
   void _showNicknameDialog(BuildContext context) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (context) => ArtistNicknameDialog(
         onSubmit: (String nickname) {
@@ -41,7 +41,7 @@ class _HomePageState extends ConsumerState<CuboidsCanvasHomePage> {
     CuboidsCanvasSettings settings,
     Artist authArtist,
   ) {
-    showModalBottomSheet(
+    showModalBottomSheet<void>(
       context: context,
       showDragHandle: true,
       isScrollControlled: true,

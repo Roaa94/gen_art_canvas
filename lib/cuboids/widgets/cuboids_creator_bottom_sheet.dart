@@ -14,9 +14,9 @@ final isLoadingSubmitProvider = StateProvider<bool>((ref) => false);
 
 class CuboidsCreatorBottomSheet extends ConsumerStatefulWidget {
   const CuboidsCreatorBottomSheet({
-    super.key,
     required this.settings,
     required this.authArtist,
+    super.key,
     this.onSubmit,
   });
 

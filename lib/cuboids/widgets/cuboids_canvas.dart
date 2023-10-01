@@ -7,10 +7,10 @@ import 'package:gen_art_canvas/settings/cuboids_canvas_settings.dart';
 
 class CuboidsCanvas extends StatefulWidget {
   const CuboidsCanvas({
+    required this.settings,
     super.key,
     this.initialGap = 40,
     this.direction = Axis.vertical,
-    required this.settings,
     this.cuboids = const [],
     this.animationEnabled = true,
     this.bgColor,
@@ -92,14 +92,15 @@ class _CuboidsCanvasState extends State<CuboidsCanvas>
 
   @override
   void dispose() {
-    animationController.removeListener(_animationControllerListener);
-    animationController.dispose();
+    animationController
+      ..removeListener(_animationControllerListener)
+      ..dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
 
     return ColoredBox(
       color: widget.bgColor ?? widget.settings.defaultPrimaryColor,
@@ -126,32 +127,25 @@ class _CuboidsCanvasState extends State<CuboidsCanvas>
 class GenArtCanvasPainter extends CustomPainter {
   GenArtCanvasPainter({
     required this.settings,
-    this.initialGap = 10,
-    this.yScale = 0.5,
     required this.randomYOffsets,
     required AnimationController animationController,
+    this.initialGap = 10,
+    this.yScale = 0.5,
     this.cuboids = const [],
-  })  : assert(randomYOffsets.length == settings.cuboidsTotalCount),
+  })  : assert(
+          randomYOffsets.length == settings.cuboidsTotalCount,
+          'Random offsets count should be the same as cuboids count',
+        ),
         animation = CurvedAnimation(
           parent: animationController,
           curve: Curves.easeInOut,
         ),
         cuboidsCrossAxisCount = sqrt(settings.cuboidsTotalCount / 2).toInt(),
-        cuboidsMainAxisCount = (2 * settings.cuboidsTotalCount).toInt(),
+        cuboidsMainAxisCount = 2 * settings.cuboidsTotalCount,
         super(repaint: animationController);
 
-  /// If [direction] is [Axis.vertical], this will be the number
-  /// of cuboids on the vertical axis
-  /// If [direction] is [Axis.horizontal], this will be the number
-  /// of cuboids on the horizontal axis
   final int cuboidsMainAxisCount;
-
-  /// If [direction] is [Axis.vertical], this will be the number
-  /// of cuboids on the horizontal axis
-  /// If [direction] is [Axis.horizontal], this will be the number
-  /// of cuboids on the vertical axis
   final int cuboidsCrossAxisCount;
-
   final CuboidsCanvasSettings settings;
   final double initialGap;
   final double yScale;
@@ -165,9 +159,9 @@ class GenArtCanvasPainter extends CustomPainter {
     final diagonal = (size.width - (gap * (cuboidsCrossAxisCount - 1 + 0.5))) /
         (cuboidsCrossAxisCount + 0.5);
 
-    for (int index = 0; index < settings.cuboidsTotalCount; index++) {
-      int j = index ~/ cuboidsCrossAxisCount;
-      int i = index % cuboidsCrossAxisCount;
+    for (var index = 0; index < settings.cuboidsTotalCount; index++) {
+      final j = index ~/ cuboidsCrossAxisCount;
+      final i = index % cuboidsCrossAxisCount;
 
       final cuboidData = cuboids.length - 1 >= index ? cuboids[index] : null;
       final xOffset =
@@ -179,9 +173,10 @@ class GenArtCanvasPainter extends CustomPainter {
       final animatedYOffset =
           Offset.lerp(beginOffset, endOffset, animation.value) ?? beginOffset;
 
-      canvas.save();
-      // Move the canvas to offset of next cuboid
-      canvas.translate(animatedYOffset.dx, animatedYOffset.dy);
+      canvas
+        ..save()
+        // Move the canvas to offset of next cuboid
+        ..translate(animatedYOffset.dx, animatedYOffset.dy);
       CuboidsUtils.paintCuboid(
         canvas,
         size: size,

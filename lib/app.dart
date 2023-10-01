@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:gen_art_canvas/core/style/app_themes.dart';
@@ -11,7 +9,7 @@ class GenArtCanvasApp extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    Size screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
     final isSmallScreen = screenSize.width < 1200;
 
     return MaterialApp(
@@ -19,7 +17,9 @@ class GenArtCanvasApp extends ConsumerWidget {
       debugShowCheckedModeBanner: false,
       theme: AppThemes.theme,
       themeMode: ThemeMode.dark,
-      home: isSmallScreen ? const CuboidsCanvasArtistPage() : const CuboidsCanvasHomePage(),
+      home: isSmallScreen
+          ? const CuboidsCanvasArtistPage()
+          : const CuboidsCanvasHomePage(),
     );
   }
 }

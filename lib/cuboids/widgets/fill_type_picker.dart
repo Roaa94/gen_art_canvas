@@ -4,8 +4,8 @@ import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
 
 class FillTypePicker extends StatelessWidget {
   const FillTypePicker({
-    super.key,
     required this.fillTypes,
+    super.key,
     this.onChanged,
     this.selectedFillType,
   });

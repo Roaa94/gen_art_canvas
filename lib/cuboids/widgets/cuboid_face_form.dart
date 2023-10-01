@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:gen_art_canvas/auth/widgets/color_picker.dart';
 import 'package:gen_art_canvas/core/style/app_colors.dart';
-import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
+import 'package:gen_art_canvas/core/widgets/color_picker.dart';
 import 'package:gen_art_canvas/cuboids/application/cuboid_form_data.dart';
+import 'package:gen_art_canvas/cuboids/domain/cuboid_face.dart';
 import 'package:gen_art_canvas/cuboids/widgets/fill_type_picker.dart';
 
 class CuboidFaceForm extends StatelessWidget {
   const CuboidFaceForm({
-    super.key,
     required this.fillTypes,
     required this.colors,
     required this.formData,
-    this.onChanged,
     required this.face,
+    super.key,
+    this.onChanged,
   });
 
   final List<CuboidFaceFillType> fillTypes;
@@ -35,8 +35,8 @@ class CuboidFaceForm extends StatelessWidget {
         _buildSectionTitle(
           context,
           title: 'Fill Type',
-          subtitle:
-              'How would you like the ${face.name} face of your cuboid to be filled?',
+          subtitle: 'How would you like the ${face.name} face of '
+              'your cuboid to be filled?',
         ),
         FillTypePicker(
           fillTypes: fillTypes,
@@ -117,7 +117,7 @@ class CuboidFaceForm extends StatelessWidget {
                 ),
               ),
             ],
-          )
+          ),
       ],
     );
   }

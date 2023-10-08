@@ -41,10 +41,7 @@ class _CuboidsCanvasState extends State<CuboidsCanvas>
       if (animationController.status == AnimationStatus.forward &&
           animationStatus == AnimationStatus.reverse) {
         setState(() {
-          randomYOffsets = List.generate(
-            widget.settings.cuboidsTotalCount,
-            (index) => random.nextDoubleRange(widget.settings.maxRandomYOffset),
-          );
+          randomYOffsets = _generateRandomYOffsets();
         });
       }
       animationStatus = animationController.status;
@@ -114,7 +111,7 @@ class _CuboidsCanvasState extends State<CuboidsCanvas>
         child: Padding(
           padding: EdgeInsets.only(top: widget.settings.maxRandomYOffset),
           child: CustomPaint(
-            painter: GenArtCanvasPainter(
+            painter: CuboidsCanvasPainter(
               randomYOffsets: randomYOffsets,
               settings: widget.settings,
               initialGap: widget.initialGap,
@@ -128,8 +125,8 @@ class _CuboidsCanvasState extends State<CuboidsCanvas>
   }
 }
 
-class GenArtCanvasPainter extends CustomPainter {
-  GenArtCanvasPainter({
+class CuboidsCanvasPainter extends CustomPainter {
+  CuboidsCanvasPainter({
     required this.settings,
     required this.randomYOffsets,
     required AnimationController animationController,

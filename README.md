@@ -5,16 +5,22 @@ Collaborative generative art canvas app built with Flutter & Firebase. It was bu
 ## Inside The App
 Initially, the app loads to an empty canvas of  animated cuboid shapes in grayscale colors
 
-https://github.com/Roaa94/gen_art_canvas/assets/50345358/2efd0834-a5fa-4da7-9d85-3af28608a5f5
+
+https://github.com/Roaa94/gen_art_canvas/assets/50345358/094eaac9-e639-4ea5-9202-6e193ccb3a30
+
 
 After enough entries through a simple UI in the app that allows you to add your own cuboids to the canvas, the canvas can look like this:
 (these are the cuboids entered by the audience in the the Flutter Firebase Festival talk)
 
-https://github.com/Roaa94/gen_art_canvas/assets/50345358/9f850879-05ba-4d59-9467-845e352a81ff
+https://github.com/Roaa94/gen_art_canvas/assets/50345358/dc4ad023-aae5-450e-abdc-660f5d749a17
+
 
 And here's what the UI to create cuboids looks like:
 
-https://github.com/Roaa94/gen_art_canvas/assets/50345358/36805800-a3cd-45e4-8382-0e2d4e22b711
+
+https://github.com/Roaa94/gen_art_canvas/assets/50345358/d5292d2b-497b-4b5f-93a6-31c7cd4aabde
+
+
 
 🔗 [Through this demo link, you can view the canvas if you are on a devide with a big screen, or you can view the the cuboid creation UI if you visit on a small screen](https://genart-canvas.roaakdm.com/)
 
